@@ -5,7 +5,8 @@ class Apod {
   final DateTime? date;
 
   /// Specify if the APOD an image or video
-  final MediaType? mediaType;
+  /// Defaults to image, as a strong majority of apods are images
+  final MediaType mediaType;
 
   /// Copyright owner(s) of the image or video
   final String? copyright;
@@ -31,7 +32,7 @@ class Apod {
 
   const Apod({
     this.date,
-    this.mediaType,
+    this.mediaType = MediaType.image,
     this.copyright,
     this.title,
     this.explanation,
