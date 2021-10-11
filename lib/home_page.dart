@@ -50,15 +50,19 @@ class _HomePageState extends State<HomePage> {
               image: AssetImage(imageToShow),
             ),
           ),
-          Text(DateFormat('yyyy-MM-dd').format(apod.date!),
-              style: const TextStyle(
-                fontSize: 14,
-              )),
-          Text(apod.title!,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              )),
+          Text(
+            DateFormat('yyyy-MM-dd').format(apod.date!),
+            style: const TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          Text(
+            apod.title!,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 8),
         ],
       ),
