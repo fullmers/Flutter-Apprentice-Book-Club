@@ -15,6 +15,7 @@ class ApodDetail extends StatefulWidget {
 }
 
 class _ApodDetailState extends State<ApodDetail> {
+  double _fontScalar = 1.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +31,20 @@ class _ApodDetailState extends State<ApodDetail> {
               image: AssetImage(widget.apod.url!),
             ),
           ),
+          Slider(
+            min: 1.0,
+            max: 2.0,
+            divisions: 10,
+            label: '$_fontScalar',
+            value: _fontScalar.toDouble(),
+            onChanged: (newValue) {
+              setState(() {
+                _fontScalar = newValue;
+              });
+            },
+            activeColor: Colors.purple[200],
+            inactiveColor: Colors.purple[800],
+          ),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -37,30 +52,30 @@ class _ApodDetailState extends State<ApodDetail> {
               children: [
                 Text(
                   DateFormat('yyyy-MM-dd').format(widget.apod.date!),
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: TextStyle(
+                    fontSize: 18 * _fontScalar,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   widget.apod.title!,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: TextStyle(
+                    fontSize: 18 * _fontScalar,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Copyright: ${widget.apod.copyright!}',
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 16 * _fontScalar,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   widget.apod.explanation!,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 16 * _fontScalar,
                   ),
                 ),
               ],
@@ -69,6 +84,5 @@ class _ApodDetailState extends State<ApodDetail> {
         ],
       )),
     );
-//    return Text(widget.apod.title!);
   }
 }
