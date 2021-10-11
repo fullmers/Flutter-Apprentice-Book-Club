@@ -20,17 +20,21 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: Apod.samples.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return (ApodDetail(apod: Apod.samples[index]));
-                  }));
-                },
-                child: _buildApodCard(Apod.samples[index]));
-          },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: Apod.samples.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return (ApodDetail(apod: Apod.samples[index]));
+                    }));
+                  },
+                  child: _buildApodCard(Apod.samples[index]));
+            },
+          ),
         ),
       ),
     );
@@ -41,11 +45,11 @@ class _HomePageState extends State<HomePage> {
         apod.mediaType == MediaType.image ? apod.url! : apod.thumb!;
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Image(
               image: AssetImage(imageToShow),
             ),
