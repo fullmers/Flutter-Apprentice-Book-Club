@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
 
+  #allow for date formatting
+  intl: ^0.17.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
