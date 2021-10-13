@@ -24,12 +24,18 @@ class _HomePageState extends State<HomePage> {
           itemCount: Apod.samples.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return (ApodDetail(apod: Apod.samples[index]));
-                  }));
-                },
-                child: _buildApodCard(Apod.samples[index]));
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return (ApodDetail(apod: Apod.samples[index]));
+                    },
+                  ),
+                );
+              },
+              child: _buildApodCard(Apod.samples[index]),
+            );
           },
         ),
       ),

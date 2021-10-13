@@ -69,6 +69,5 @@ class _ApodDetailState extends State<ApodDetail> {
         ],
       )),
     );
-//    return Text(widget.apod.title!);
   }
 }
