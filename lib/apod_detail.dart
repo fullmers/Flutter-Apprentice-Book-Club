@@ -15,7 +15,9 @@ class ApodDetail extends StatefulWidget {
 }
 
 class _ApodDetailState extends State<ApodDetail> {
-  double _fontScalar = 1.0;
+  double _sliderScalar = 1.0;
+  final TransformationController _controller = TransformationController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,19 +29,23 @@ class _ApodDetailState extends State<ApodDetail> {
         children: [
           SizedBox(
             width: double.infinity,
-            child: Image(
-              image: AssetImage(widget.apod.url!),
+            child: InteractiveViewer(
+              transformationController: _controller,
+              child: Image(
+                image: AssetImage(widget.apod.url!),
+              ),
             ),
           ),
           Slider(
             min: 1.0,
-            max: 2.0,
-            divisions: 10,
-            label: '$_fontScalar',
-            value: _fontScalar.toDouble(),
+            max: 4.0,
+            divisions: 20,
+            label: _sliderScalar.toStringAsPrecision(2),
+            value: _sliderScalar.toDouble(),
             onChanged: (newValue) {
               setState(() {
-                _fontScalar = newValue;
+                _sliderScalar = newValue;
+                _controller.value = Matrix4.identity().scaled(_sliderScalar);
               });
             },
             activeColor: Colors.purple[200],
@@ -50,32 +56,47 @@ class _ApodDetailState extends State<ApodDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  DateFormat('yyyy-MM-dd').format(widget.apod.date!),
-                  style: TextStyle(
-                    fontSize: 18 * _fontScalar,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      DateFormat('yyyy-MM-dd').format(widget.apod.date!),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Chip(
+                      backgroundColor: Colors.purple,
+                      label: Text(
+                        'Zoom: ${_sliderScalar.toStringAsPrecision(2)}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
                   widget.apod.title!,
-                  style: TextStyle(
-                    fontSize: 18 * _fontScalar,
+                  style: const TextStyle(
+                    fontSize: 18,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Copyright: ${widget.apod.copyright!}',
-                  style: TextStyle(
-                    fontSize: 16 * _fontScalar,
+                  style: const TextStyle(
+                    fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   widget.apod.explanation!,
-                  style: TextStyle(
-                    fontSize: 16 * _fontScalar,
+                  style: const TextStyle(
+                    fontSize: 16,
                   ),
                 ),
               ],
