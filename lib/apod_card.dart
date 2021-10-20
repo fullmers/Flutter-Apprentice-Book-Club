@@ -27,19 +27,24 @@ class ApodCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Text(
-              apod.title ?? '',
-              style: ApodTheme.darkTextTheme.headline2,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  apod.title ?? '',
+                  style: ApodTheme.darkTextTheme.headline2,
+                ),
+                apod.date != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          DateFormat('yyyy-MM-dd').format(apod.date!),
+                          style: ApodTheme.darkTextTheme.bodyText1,
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
-            apod.date != null
-                ? Positioned(
-                    top: 32,
-                    child: Text(
-                      DateFormat('yyyy-MM-dd').format(apod.date!),
-                      style: ApodTheme.darkTextTheme.bodyText1,
-                    ),
-                  )
-                : Container(),
             Positioned(
               bottom: 12,
               right: 0,
