@@ -1,7 +1,7 @@
-import 'package:apod/apod.dart';
-import 'package:apod/apod_detail.dart';
+import 'package:apod/current_apod_page.dart';
+import 'package:apod/favorites_apod_page.dart';
+import 'package:apod/recent_apod_page.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -13,6 +13,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  static List<Widget> pages = [
+    const CurrentApodPage(),
+    const RecentApodPage(),
+    const FavoritesApodPage(),
+  ];
+
+  void _onTapBottomNavBarItem(int index) =>
+      setState(() => _selectedIndex = index);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,50 +31,25 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: Apod.samples.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return (ApodDetail(apod: Apod.samples[index]));
-                  }));
-                },
-                child: _buildApodCard(Apod.samples[index]));
-          },
-        ),
+        child: pages[_selectedIndex],
       ),
-    );
-  }
-
-  Widget _buildApodCard(Apod apod) {
-    final String imageToShow =
-        apod.mediaType == MediaType.image ? apod.url! : apod.thumb!;
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image(
-              image: AssetImage(imageToShow),
-            ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onTapBottomNavBarItem,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo),
+            label: 'APOD',
           ),
-          Text(
-            DateFormat('yyyy-MM-dd').format(apod.date!),
-            style: const TextStyle(
-              fontSize: 14,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Recent',
           ),
-          Text(
-            apod.title!,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Favorites',
           ),
-          const SizedBox(height: 8),
         ],
       ),
     );
