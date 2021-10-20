@@ -1,6 +1,8 @@
 import 'package:apod/home_page.dart';
 import 'package:flutter/material.dart';
 
+import 'apod_theme.dart';
+
 void main() {
   runApp(const ApodApp());
 }
@@ -10,14 +12,10 @@ class ApodApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData();
     return MaterialApp(
       title: 'APOD',
-      theme: theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-        primary: Colors.purple,
-        secondary: Colors.purpleAccent,
-      )),
+      theme: ApodTheme.light(),
+      darkTheme: ApodTheme.dark(),
       home: const HomePage(title: 'Astronomy Picture of the Day'),
     );
   }
