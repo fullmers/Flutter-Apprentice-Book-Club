@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'api/mock_apod_service.dart';
-import 'apod.dart';
-import 'apod_card.dart';
-import 'apod_detail.dart';
+import '../../api/mock_apod_service.dart';
+import '../shared/models/apod.dart';
+import '../shared/widgets/apod_card.dart';
+import '../shared/widgets/apod_detail.dart';
 
 class CurrentApodPage extends StatelessWidget {
   const CurrentApodPage({Key? key}) : super(key: key);

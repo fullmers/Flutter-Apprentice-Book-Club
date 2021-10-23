@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:apod/apod.dart';
+import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/services.dart';
 
 /// Mock apod api service that grabs sample json data to mock apod request/response

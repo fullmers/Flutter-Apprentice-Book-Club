@@ -1,4 +1,4 @@
-import 'package:apod/apod.dart';
+import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

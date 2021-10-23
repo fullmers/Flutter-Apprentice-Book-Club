@@ -1,9 +1,9 @@
-import 'package:apod/apod.dart';
-import 'package:apod/apod_card.dart';
-import 'package:apod/apod_detail.dart';
+import 'package:apod/features/shared/models/apod.dart';
+import 'package:apod/features/shared/widgets/apod_card.dart';
+import 'package:apod/features/shared/widgets/apod_detail.dart';
 import 'package:flutter/material.dart';
 
-import 'api/mock_apod_service.dart';
+import '../../api/mock_apod_service.dart';
 
 @immutable
 class RecentApodPage extends StatelessWidget {

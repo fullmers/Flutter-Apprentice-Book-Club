@@ -1,6 +1,6 @@
-import 'package:apod/current_apod_page.dart';
-import 'package:apod/favorites_apod_page.dart';
-import 'package:apod/recent_apod_page.dart';
+import 'package:apod/features/current_apod/current_apod_page.dart';
+import 'package:apod/features/favorite_apods/favorites_apod_page.dart';
+import 'package:apod/features/recent_apods/recent_apod_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

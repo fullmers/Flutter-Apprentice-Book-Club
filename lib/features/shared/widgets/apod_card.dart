@@ -1,8 +1,8 @@
-import 'package:apod/apod.dart';
+import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'apod_theme.dart';
+import '../../../apod_theme.dart';
 
 const cardWidth = 350.0;
 const cardHeight = 450.0;
