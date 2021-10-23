@@ -1,9 +1,10 @@
 {
-  "date": "2021-10-23",
-  "explanation": "Put on your red/blue glasses and float next to asteroid 101955 Bennu. Shaped like a spinning toy top with boulders littering its rough surface, the tiny Solar System world is about one Empire State Building (less than 500 meters) across. Frames used to construct this 3D anaglyph were taken by PolyCam on the OSIRIS_REx spacecraft on December 3, 2018 from a distance of about 80 kilometers. With a sample from the asteroid's rocky surface on board, OSIRIS_REx departed Bennu's vicinity this May and is now enroute to planet Earth. The robotic spacecraft is scheduled to return the sample to Earth in September 2023.",
-  "hdurl": "assets/apod_images/2021-10-09-peg51_desmars_ex1024.jpeg",
+  "copyright": "Gianni Sarcone",
+  "date": "2021-10-16",
+  "explanation": "Only natural colors of the Moon in planet Earth's sky appear in this creative visual presentation. Arranged as pixels in a framed image, the lunar disks were photographed at different times. Their varying hues are ultimately due to reflected sunlight affected by changing atmospheric conditions and the alignment geometry of Moon, Earth, and Sun. Here, the darkest lunar disks are the colors of earthshine. A description of earthshine, in terms of sunlight reflected by Earth's oceans illuminating the Moon's dark surface, was written over 500 years ago by Leonardo da Vinci.  But stand farther back from your monitor or just shift your gaze to the smaller versions of the image. You might also see one of da Vinci's most famous works of art.  Tonight: International Observe the Moon Night",
+  "hdurl": "assets/apod_images/2021-10-16-Moonalisa_Example1024.jpg",
   "media_type": "image",
   "service_version": "v1",
-  "title": "3D Bennu",
-  "url": "assets/apod_images/2021-10-09-peg51_desmars_ex1024.jpeg"
+  "title": "The Moona Lisa",
+  "url": "assets/apod_images/2021-10-16-Moonalisa_Example1024.jpg"
 }

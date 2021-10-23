@@ -43,9 +43,9 @@ class Apod {
     this.videoUrl,
   });
 
-  /// create an Apod using json data from the API (mocked data or real)
+  /// create an Apod using json data from the API (mocked service or real)
   /// Note: The logic in this method is something we would generally want handled on the
-  /// server side. Until we learn about that, however, we will keep it here.
+  /// server. For now, however, we will keep it here.
   factory Apod.fromJson(Map<String, dynamic> json) {
     // the API returns a string in the form YYYY-MM-DD. Here we parse and turn
     // it into the DateTime object required by the Apod constructor

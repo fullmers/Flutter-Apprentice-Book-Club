@@ -3,16 +3,30 @@ import 'dart:convert';
 import 'package:apod/apod.dart';
 import 'package:flutter/services.dart';
 
-// Mock apod api service that grabs sample json data to mock apod request/response
+/// Mock apod api service that grabs sample json data to mock apod request/response
 class MockApodService {
-  // Request that gets today's APOD
+  /// Request that gets today's APOD
   Future<Apod> getCurrentApod() async {
     final currentApod = await _getCurrentApod();
 
     return currentApod;
   }
 
-  // Get sample current Apod json to display in ui
+  /// Request that gets a list of recent APOD
+  Future<List<Apod>> getRecentApods() async {
+    final recentApods = await _getRecentApodList();
+
+    return recentApods;
+  }
+
+  /// Request that gets favorited APODs
+  Future<List<Apod>> getFavoriteApods() async {
+    final favoriteApods = await _getFavoriteApodList();
+
+    return favoriteApods;
+  }
+
+  /// Get sample current Apod json to display in ui
   Future<Apod> _getCurrentApod() async {
     // Simulate api request wait time
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -24,41 +38,34 @@ class MockApodService {
     return Apod.fromJson(json);
   }
 
-  // Get the recent Apod list from sample json posts to display on the recents tab
+  /// Get the recent Apod list from sample json to display on the recents tab
   Future<List<Apod>> _getRecentApodList() async {
     // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 100));
     // Load json from file system
-    final dataString =
-        await _loadAsset('assets/sample_data/sample_friends_feed.json');
-    // Decode to json
-    final Map<String, dynamic> json = jsonDecode(dataString);
-
-    // Go through each Apod and convert json to Apod object.
-    List<Apod> recentApods =
-        List<Apod>.from(json.values.map((model) => Apod.fromJson(model)));
-
+    final dataString = await _loadAsset('assets/json/sample_recent_apods.json');
+    // decode json
+    final apodList = json.decode(dataString);
+    List<Apod> recentApods = [];
+    apodList.forEach((e) => recentApods.add(Apod.fromJson(e)));
     return recentApods;
   }
 
-  // Get the recent Apod list from sample json posts to display on the favorites tab
+  /// Get the favorite Apod list from sample json to display on the favorites tab
   Future<List<Apod>> _getFavoriteApodList() async {
     // Simulate api request wait time
     await Future.delayed(const Duration(milliseconds: 1000));
     // Load json from file system
     final dataString =
-        await _loadAsset('assets/sample_data/sample_friends_feed.json');
-    // Decode to json
-    final Map<String, dynamic> json = jsonDecode(dataString);
-
-    // Go through each Apod and convert json to Apod object.
-    List<Apod> recentApods =
-        List<Apod>.from(json.values.map((model) => Apod.fromJson(model)));
-
-    return recentApods;
+        await _loadAsset('assets/json/sample_favorite_apods.json');
+    // decode json
+    final apodList = json.decode(dataString);
+    List<Apod> favoriteApods = [];
+    apodList.forEach((e) => favoriteApods.add(Apod.fromJson(e)));
+    return favoriteApods;
   }
 
-  // Loads sample json data from file system
+  /// Loads sample json data from file system
   Future<String> _loadAsset(String path) async {
     return rootBundle.loadString(path);
   }

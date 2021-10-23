@@ -35,21 +35,41 @@ class ApodCard extends StatelessWidget {
   }
 
   Widget _buildPicture() {
-    return Container(
-      constraints: const BoxConstraints.expand(
-        width: cardWidth,
-        height: cardHeight,
-      ),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(apod.displayImageUrl!),
-          fit: BoxFit.cover,
+    if (apod.displayImageUrl != null) {
+      return Container(
+        constraints: const BoxConstraints.expand(
+          width: cardWidth,
+          height: cardHeight,
         ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(cardRadius),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(apod.displayImageUrl!),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(cardRadius),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container(
+        constraints: const BoxConstraints.expand(
+          width: cardWidth,
+          height: cardHeight - 120,
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.black45,
+          borderRadius: BorderRadius.all(
+            Radius.circular(cardRadius),
+          ),
+        ),
+        child: const Icon(
+          Icons.play_circle_outline,
+          size: 72,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 
   Widget _buildTopOverlay() {

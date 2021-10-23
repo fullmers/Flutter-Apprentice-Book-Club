@@ -29,13 +29,7 @@ class _ApodDetailState extends State<ApodDetail> {
             Positioned(
               height: MediaQuery.of(context).size.height * 0.4,
               width: MediaQuery.of(context).size.width,
-              child: InteractiveViewer(
-                transformationController: _controller,
-                child: Image(
-                  image: AssetImage(widget.apod.displayImageUrl!),
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
+              child: _getImage(),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.4,
@@ -46,22 +40,23 @@ class _ApodDetailState extends State<ApodDetail> {
               width: MediaQuery.of(context).size.width,
               child: ListView(
                 children: [
-                  Slider(
-                    min: 1.0,
-                    max: 4.0,
-                    divisions: 20,
-                    label: _sliderScalar.toStringAsPrecision(2),
-                    value: _sliderScalar.toDouble(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        _sliderScalar = newValue;
-                        _controller.value =
-                            Matrix4.identity().scaled(_sliderScalar);
-                      });
-                    },
-                    activeColor: Colors.purple[200],
-                    inactiveColor: Colors.purple[800],
-                  ),
+                  if (widget.apod.mediaType == MediaType.image)
+                    Slider(
+                      min: 1.0,
+                      max: 4.0,
+                      divisions: 20,
+                      label: _sliderScalar.toStringAsPrecision(2),
+                      value: _sliderScalar.toDouble(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _sliderScalar = newValue;
+                          _controller.value =
+                              Matrix4.identity().scaled(_sliderScalar);
+                        });
+                      },
+                      activeColor: Colors.purple[200],
+                      inactiveColor: Colors.purple[800],
+                    ),
                   _ApodBody(widget.apod, scalar: _sliderScalar),
                 ],
               ),
@@ -70,6 +65,45 @@ class _ApodDetailState extends State<ApodDetail> {
         ),
       ),
     );
+  }
+
+  /// show either an apod image, an apod video thumb with play button, or a gray
+  /// box with a play button (if no thumbnail was available)
+  Widget _getImage() {
+    if (widget.apod.displayImageUrl != null) {
+      if (widget.apod.mediaType == MediaType.image) {
+        return InteractiveViewer(
+          transformationController: _controller,
+          child: Image(
+            image: AssetImage(widget.apod.displayImageUrl!),
+            fit: BoxFit.fitWidth,
+          ),
+        );
+      } else {
+        return Stack(children: [
+          Image(
+            image: AssetImage(widget.apod.displayImageUrl!),
+            fit: BoxFit.fitWidth,
+          ),
+          const Center(
+            child: Icon(
+              Icons.play_circle_outline,
+              size: 72,
+              color: Colors.white,
+            ),
+          )
+        ]);
+      }
+    } else {
+      return Container(
+        color: Colors.black45,
+        child: const Icon(
+          Icons.play_circle_outline,
+          size: 72,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 }
 
@@ -95,16 +129,17 @@ class _ApodBody extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Chip(
-                backgroundColor: Colors.purple,
-                label: Text(
-                  'Zoom: ${scalar.toStringAsPrecision(2)}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.white),
+              if (apod.mediaType == MediaType.image)
+                Chip(
+                  backgroundColor: Colors.purple,
+                  label: Text(
+                    'Zoom: ${scalar.toStringAsPrecision(2)}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Colors.white),
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -128,6 +163,7 @@ class _ApodBody extends StatelessWidget {
               fontSize: 16,
             ),
           ),
+          const SizedBox(height: 72),
         ],
       ),
     );
