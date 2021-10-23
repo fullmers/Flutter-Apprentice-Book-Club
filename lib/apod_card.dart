@@ -42,7 +42,7 @@ class ApodCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(apod.url!),
+          image: AssetImage(apod.displayImageUrl!),
           fit: BoxFit.cover,
         ),
         borderRadius: const BorderRadius.all(
@@ -78,7 +78,7 @@ class ApodCard extends StatelessWidget {
             // choose to end the single line with an ellipsis. The user can
             // click on the card to read the full text.
             Text(
-              apod.title ?? '',
+              apod.title,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
@@ -121,7 +121,7 @@ class ApodCard extends StatelessWidget {
             // of wrapping, we choose to end the single line with an ellipsis.
             // The user can click on the card to read the full text.
             Text(
-              apod.copyright ?? '',
+              apod.copyright,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,

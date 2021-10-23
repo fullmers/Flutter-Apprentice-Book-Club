@@ -21,7 +21,7 @@ class _ApodDetailState extends State<ApodDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: (Text(widget.apod.title!)),
+        title: (Text(widget.apod.title)),
       ),
       body: SafeArea(
         child: Stack(
@@ -32,7 +32,7 @@ class _ApodDetailState extends State<ApodDetail> {
               child: InteractiveViewer(
                 transformationController: _controller,
                 child: Image(
-                  image: AssetImage(widget.apod.url!),
+                  image: AssetImage(widget.apod.displayImageUrl!),
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -109,21 +109,21 @@ class _ApodBody extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            apod.title!,
+            apod.title,
             style: const TextStyle(
               fontSize: 18,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            'Copyright: ${apod.copyright!}',
+            'Copyright: ${apod.copyright}',
             style: const TextStyle(
               fontSize: 16,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            apod.explanation!,
+            apod.explanation,
             style: const TextStyle(
               fontSize: 16,
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'api/mock_apod_service.dart';
 import 'apod.dart';
 import 'apod_card.dart';
 import 'apod_detail.dart';
@@ -16,8 +17,35 @@ class CurrentApodPage extends StatelessWidget {
         }));
       },
       child: Center(
-        child: ApodCard(Apod.samples[0]),
+        child: _buildApodCard(), //ApodCard(Apod.samples[0]),
       ),
+    );
+  }
+
+  Widget _buildApodCard() {
+    // 1
+    final mockService = MockApodService();
+
+    return FutureBuilder(
+      // 2
+      future: mockService.getCurrentApod(),
+      // 3
+      builder: (context, AsyncSnapshot<Apod> snapshot) {
+        // TODO: Add Nested List Views
+        // 4
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Center(
+            child: (snapshot.data == null)
+                ? Text('oops')
+                : ApodCard(snapshot.data!),
+          );
+        } else {
+          // 6
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }
