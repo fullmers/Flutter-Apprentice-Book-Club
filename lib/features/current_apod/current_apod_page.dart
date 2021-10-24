@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../api/mock_apod_service.dart';
-import '../recent_apods/apod_card.dart';
 import '../shared/models/apod.dart';
 import '../shared/widgets/apod_detail.dart';
+import 'full_screen_apod.dart';
 
 class CurrentApodPage extends StatelessWidget {
   const CurrentApodPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class CurrentApodPage extends StatelessWidget {
       future: mockService.getCurrentApod(),
       builder: (context, AsyncSnapshot<Apod> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return (snapshot.data == null)
+          return (snapshot.data == null && snapshot.data is Apod)
               ? const Text('Something went wrong')
               : GestureDetector(
                   onTap: () {
@@ -28,7 +28,7 @@ class CurrentApodPage extends StatelessWidget {
                     );
                   },
                   child: Center(
-                    child: ApodCard(snapshot.data!),
+                    child: FullScreenApod(snapshot.data!),
                   ),
                 );
         } else {

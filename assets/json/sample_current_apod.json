@@ -1,10 +1,10 @@
 {
-  "copyright": "Gianni Sarcone",
-  "date": "2021-10-16",
-  "explanation": "Only natural colors of the Moon in planet Earth's sky appear in this creative visual presentation. Arranged as pixels in a framed image, the lunar disks were photographed at different times. Their varying hues are ultimately due to reflected sunlight affected by changing atmospheric conditions and the alignment geometry of Moon, Earth, and Sun. Here, the darkest lunar disks are the colors of earthshine. A description of earthshine, in terms of sunlight reflected by Earth's oceans illuminating the Moon's dark surface, was written over 500 years ago by Leonardo da Vinci.  But stand farther back from your monitor or just shift your gaze to the smaller versions of the image. You might also see one of da Vinci's most famous works of art.  Tonight: International Observe the Moon Night",
-  "hdurl": "assets/apod_images/2021-10-16-Moonalisa_Example1024.jpg",
+  "copyright": "Yizhou Zhang",
+  "date": "2021-10-13",
+  "explanation": "It may look like a huge cosmic question mark, but the big question really is  how does the bright gas and dark dust tell this nebula's history of star formation.  At the edge of a giant molecular cloud toward the northern constellation Cepheus, the glowing star forming region NGC 7822 lies about 3,000 light-years away. Within the nebula, bright edges and dark shapes stand out in this colorful and detailed skyscape. The 9-panel mosaic, taken over 28 nights with a small telescope in Texas, includes data from narrowband filters, mapping emission from atomic oxygen, hydrogen, and sulfur into blue, green, and red hues. The emission line and color combination has become well-known as the Hubble palette. The atomic emission is powered by energetic radiation from the central hot stars. Their powerful winds and radiation sculpt and erode the denser pillar shapes and clear out a characteristic cavity light-years across the center of the natal cloud. Stars could still be forming inside the pillars by gravitational collapse but as the pillars are eroded away, any forming stars will ultimately be cut off from their reservoir of star stuff. This field of view spans over 40 light-years across at the estimated distance of NGC 7822.",
+  "hdurl": "assets/apod_images/2021-10-13-NGC7822_Yizhou_960.jpg",
   "media_type": "image",
   "service_version": "v1",
-  "title": "The Moona Lisa",
-  "url": "assets/apod_images/2021-10-16-Moonalisa_Example1024.jpg"
+  "title": "NGC 7822: Cosmic Question Mark",
+  "url": "assets/apod_images/2021-10-13-NGC7822_Yizhou_960.jpg"
 }

@@ -6,6 +6,10 @@ class ApodTheme {
   static TextTheme lightTextTheme = TextTheme(
     bodyText1: GoogleFonts.openSans(
         fontSize: 14.0, fontWeight: FontWeight.w700, color: Colors.black),
+    subtitle1: GoogleFonts.openSans(
+        fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
+    subtitle2: GoogleFonts.openSans(
+        fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black),
     headline1: GoogleFonts.openSans(
         fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.black),
     headline2: GoogleFonts.openSans(
@@ -18,6 +22,10 @@ class ApodTheme {
   static TextTheme darkTextTheme = TextTheme(
     bodyText1: GoogleFonts.openSans(
         fontSize: 14.0, fontWeight: FontWeight.w600, color: Colors.white),
+    subtitle1: GoogleFonts.openSans(
+        fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
+    subtitle2: GoogleFonts.openSans(
+        fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
     headline1: GoogleFonts.openSans(
         fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.white),
     headline2: GoogleFonts.openSans(
