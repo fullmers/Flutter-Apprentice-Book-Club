@@ -41,7 +41,7 @@ class MockApodService {
   /// Get the recent Apod list from sample json to display on the recents tab
   Future<List<Apod>> _getRecentApodList() async {
     // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // Load json from file system
     final dataString = await _loadAsset('assets/json/sample_recent_apods.json');
     // decode json

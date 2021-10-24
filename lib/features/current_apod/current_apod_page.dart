@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../api/mock_apod_service.dart';
+import '../recent_apods/apod_card.dart';
 import '../shared/models/apod.dart';
-import '../shared/widgets/apod_card.dart';
 import '../shared/widgets/apod_detail.dart';
 
 class CurrentApodPage extends StatelessWidget {
