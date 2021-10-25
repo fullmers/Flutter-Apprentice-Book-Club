@@ -17,7 +17,7 @@ class RecentApodPage extends StatelessWidget {
       builder: (context, AsyncSnapshot<List<Apod>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           List<Apod>? apods = snapshot.data;
-          return (apods != null && apods is List<Apod>)
+          return (apods != null)
               ? ListView.builder(
                   itemCount: apods.length,
                   itemBuilder: (BuildContext context, int index) {
