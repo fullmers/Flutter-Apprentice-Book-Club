@@ -10,10 +10,8 @@ class FavoritesApodPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final apodService = MockApodService();
     return FutureBuilder(
-      // 3
       future: apodService.getFavoriteApods(),
       builder: (context, AsyncSnapshot<List<Apod>> snapshot) {
-        // 4
         if (snapshot.connectionState == ConnectionState.done) {
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
