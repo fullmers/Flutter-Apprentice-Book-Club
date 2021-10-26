@@ -11,10 +11,9 @@ class JournalPage extends StatelessWidget {
     return Scaffold(
       body: Consumer<JournalManager>(
         builder: (context, manager, child) {
-          final _entries = manager.entries;
-          return _entries.isEmpty
+          return manager.entries.isEmpty
               ? const EmptyJournalView()
-              : JournalView(_entries);
+              : const JournalView();
         },
       ),
       floatingActionButton: FloatingActionButton(
