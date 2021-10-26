@@ -31,7 +31,22 @@ class JournalListView extends StatelessWidget {
                 ),
               );
             },
-            child: _EntryTile(entries[index]),
+            child: Dismissible(
+              key: Key(entries[index].id),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight,
+                child: const Icon(Icons.delete_forever,
+                    color: Colors.white, size: 50.0),
+              ),
+              onDismissed: (direction) {
+                manager.deleteItem(index);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${entries[index].title} deleted')));
+              },
+              child: _EntryTile(entries[index]),
+            ),
           ),
         );
       },

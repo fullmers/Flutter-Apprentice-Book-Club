@@ -32,7 +32,10 @@ class _HomePageState extends State<HomePage> {
           title: Text(widget.title),
         ),
         body: SafeArea(
-          child: pages[tabManager.selectedTab],
+          child: IndexedStack(
+            index: tabManager.selectedTab,
+            children: pages,
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: tabManager.selectedTab,
