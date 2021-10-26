@@ -20,6 +20,7 @@ class ApodApp extends StatelessWidget {
       darkTheme: ApodTheme.dark(),
       home: MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (context) => JournalManager()),
           ChangeNotifierProvider(create: (context) => TabManager()),
         ],
         child: const HomePage(title: 'Astronomy Picture of the Day'),
