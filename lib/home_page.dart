@@ -3,6 +3,8 @@ import 'package:apod/features/favorite_apods/favorites_apod_page.dart';
 import 'package:apod/features/recent_apods/recent_apod_page.dart';
 import 'package:flutter/material.dart';
 
+import 'features/journal/journal.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
 
@@ -19,6 +21,7 @@ class _HomePageState extends State<HomePage> {
     const CurrentApodPage(),
     const RecentApodPage(),
     const FavoritesApodPage(),
+    const JournalPage(),
   ];
 
   void _onTapBottomNavBarItem(int index) =>
@@ -36,6 +39,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTapBottomNavBarItem,
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -49,6 +53,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Journal',
           ),
         ],
       ),
