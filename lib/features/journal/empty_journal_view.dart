@@ -1,4 +1,6 @@
+import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EmptyJournalView extends StatelessWidget {
   const EmptyJournalView({Key? key}) : super(key: key);
@@ -31,7 +33,8 @@ class EmptyJournalView extends StatelessWidget {
         SizedBox(height: size.height / 30),
         Center(
           child: MaterialButton(
-            onPressed: () {},
+            onPressed: () => Provider.of<TabManager>(context, listen: false)
+                .goToRecentApods(),
             padding: const EdgeInsets.all(20.0),
             textColor: Colors.white,
             child: const Text('Browse APODs'),
