@@ -18,6 +18,7 @@ class ApodApp extends StatelessWidget {
       title: 'APOD',
       theme: ApodTheme.light(),
       darkTheme: ApodTheme.dark(),
+      debugShowCheckedModeBanner: false,
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => JournalManager()),

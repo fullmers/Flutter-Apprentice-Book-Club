@@ -25,9 +25,11 @@ class RecentApodPage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) {
-                            return (ApodDetail(apod: apods[index]));
-                          }),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return (ApodDetail(apod: apods[index]));
+                            },
+                          ),
                         );
                       },
                       child: Padding(

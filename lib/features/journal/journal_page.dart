@@ -1,3 +1,4 @@
+import 'package:apod/features/journal/add_journal_entry_page.dart';
 import 'package:apod/features/journal/journal.dart';
 import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
@@ -11,18 +12,27 @@ class JournalPage extends StatelessWidget {
     return Scaffold(
       body: Consumer<JournalManager>(
         builder: (context, manager, child) {
-          final _entries = manager.entries;
-          return _entries.isEmpty
+          return manager.entries.isEmpty
               ? const EmptyJournalView()
-              : JournalView(_entries);
+              : const JournalListView();
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: () {},
-        ),
+        onPressed: () {
+          final manager = Provider.of<JournalManager>(context, listen: false);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddJournalEntryPage(
+                onSave: (item) {
+                  manager.addItem(item);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.edit),
       ),
     );
   }
