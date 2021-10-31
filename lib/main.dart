@@ -1,11 +1,12 @@
-import 'package:apod/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'apod_theme.dart';
+import 'home_page.dart';
 import 'models/models.dart';
 
 void main() {
+  appStateManager.initializeApp();
   runApp(const ApodApp());
 }
 
@@ -14,17 +15,17 @@ class ApodApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'APOD',
-      theme: ApodTheme.light(),
-      darkTheme: ApodTheme.dark(),
-      debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => JournalManager()),
-          ChangeNotifierProvider(create: (context) => TabManager()),
-        ],
-        child: const HomePage(title: 'Astronomy Picture of the Day'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => JournalManager()),
+        ChangeNotifierProvider(create: (context) => appStateManager),
+      ],
+      child: MaterialApp(
+        title: 'APOD',
+        theme: ApodTheme.light(),
+        darkTheme: ApodTheme.dark(),
+        debugShowCheckedModeBanner: false,
+        home: const HomePage(title: 'Astronomy Picture of the Day'),
       ),
     );
   }
