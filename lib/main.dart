@@ -22,7 +22,7 @@ class ApodApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => JournalManager()),
-          ChangeNotifierProvider(create: (context) => TabManager()),
+          ChangeNotifierProvider(create: (context) => AppStateManager()),
         ],
         child: const HomePage(title: 'Astronomy Picture of the Day'),
       ),

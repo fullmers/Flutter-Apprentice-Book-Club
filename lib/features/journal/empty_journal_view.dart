@@ -33,8 +33,9 @@ class EmptyJournalView extends StatelessWidget {
         SizedBox(height: size.height / 30),
         Center(
           child: MaterialButton(
-            onPressed: () => Provider.of<TabManager>(context, listen: false)
-                .goToRecentApods(),
+            onPressed: () =>
+                Provider.of<AppStateManager>(context, listen: false)
+                    .goToRecentApods(),
             padding: const EdgeInsets.all(20.0),
             textColor: Colors.white,
             child: const Text('Browse APODs'),
