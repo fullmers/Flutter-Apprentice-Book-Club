@@ -1,6 +1,7 @@
 import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -58,7 +59,7 @@ class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
       date: date ?? DateTime.now(),
     );
     widget.onSave(entry);
-    Navigator.pop(context);
+    context.go('/?tab=3');
   }
 
   @override

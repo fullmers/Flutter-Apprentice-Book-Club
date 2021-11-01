@@ -34,6 +34,12 @@ class AppStateManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Useful for deep links to a single tab. Should not be used
+  /// during normal navigation.
+  void silentlySetTab(int index) {
+    _selectedTab = index;
+  }
+
   void goToRecentApods() {
     _selectedTab = ApodTab.recent;
     notifyListeners();
