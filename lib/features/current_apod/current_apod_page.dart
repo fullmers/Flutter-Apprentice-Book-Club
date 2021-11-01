@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../api/mock_apod_service.dart';
 import '../shared/models/apod.dart';
-import '../shared/widgets/apod_detail.dart';
 import 'full_screen_apod.dart';
 
 class CurrentApodPage extends StatelessWidget {
@@ -20,12 +20,7 @@ class CurrentApodPage extends StatelessWidget {
               ? const Text('Something went wrong')
               : GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return (ApodDetail(apod: snapshot.data!));
-                      }),
-                    );
+                    context.go('/apod/${snapshot.data!.id}');
                   },
                   child: Center(
                     child: FullScreenApod(snapshot.data!),

@@ -1,11 +1,21 @@
+import 'package:apod/api/mock_apod_service.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ApodDetail extends StatefulWidget {
-  final Apod apod;
+  final int id;
 
-  const ApodDetail({Key? key, required this.apod}) : super(key: key);
+  const ApodDetail({Key? key, required this.id}) : super(key: key);
+
+  static Page page({
+    required int id,
+    LocalKey? key,
+  }) =>
+      MaterialPage<void>(
+        key: key,
+        child: ApodDetail(id: id),
+      );
 
   @override
   _ApodDetailState createState() {
@@ -16,12 +26,31 @@ class ApodDetail extends StatefulWidget {
 class _ApodDetailState extends State<ApodDetail> {
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
+  Apod? apod;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// Never load data directly in a widget like this, but we'll improve
+    /// our implementation once we tackle state management for real.
+    final service = MockApodService();
+    service
+        .getSingleApod(widget.id)
+        .then((apod) => setState(() => this.apod = apod));
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (apod == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator.adaptive()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: (Text(widget.apod.title)),
+        title: (Text(apod!.title)),
       ),
       body: SafeArea(
         child: Stack(
@@ -40,7 +69,7 @@ class _ApodDetailState extends State<ApodDetail> {
               width: MediaQuery.of(context).size.width,
               child: ListView(
                 children: [
-                  if (widget.apod.mediaType == MediaType.image)
+                  if (apod!.mediaType == MediaType.image)
                     Slider(
                       min: 1.0,
                       max: 4.0,
@@ -57,7 +86,7 @@ class _ApodDetailState extends State<ApodDetail> {
                       activeColor: Colors.purple[200],
                       inactiveColor: Colors.purple[800],
                     ),
-                  _ApodBody(widget.apod, scalar: _sliderScalar),
+                  _ApodBody(apod!, scalar: _sliderScalar),
                 ],
               ),
             ),
@@ -70,19 +99,19 @@ class _ApodDetailState extends State<ApodDetail> {
   /// show either an apod image, an apod video thumb with play button, or a gray
   /// box with a play button (if no thumbnail was available)
   Widget _getImage() {
-    if (widget.apod.displayImageUrl != null) {
-      if (widget.apod.mediaType == MediaType.image) {
+    if (apod!.displayImageUrl != null) {
+      if (apod!.mediaType == MediaType.image) {
         return InteractiveViewer(
           transformationController: _controller,
           child: Image(
-            image: AssetImage(widget.apod.displayImageUrl!),
+            image: AssetImage(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
         );
       } else {
         return Stack(children: [
           Image(
-            image: AssetImage(widget.apod.displayImageUrl!),
+            image: AssetImage(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
           const Center(

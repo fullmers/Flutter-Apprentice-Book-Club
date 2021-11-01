@@ -1,4 +1,5 @@
 import 'package:apod/features/journal/journal.dart';
+import 'package:apod/features/shared/widgets/apod_detail.dart';
 import 'package:apod/features/splash/splash_page.dart';
 import 'package:apod/home_page.dart';
 import 'package:apod/models/models.dart';
@@ -20,7 +21,15 @@ class Routes {
         HomePage.page(key: state.pageKey),
     routes: [
       writeJournal,
+      apodDetail,
     ],
+  );
+
+  static final apodDetail = GoRoute(
+    name: 'apodDetail',
+    path: 'apod/:id',
+    pageBuilder: (BuildContext context, GoRouterState state) =>
+        ApodDetail.page(id: int.parse(state.params['id']!)),
   );
 
   static final writeJournal = GoRoute(

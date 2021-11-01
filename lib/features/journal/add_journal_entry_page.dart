@@ -30,7 +30,6 @@ class AddJournalEntryPage extends StatefulWidget {
 }
 
 class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
-  late final JournalEntry entry;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
   DateTime? date;

@@ -1,6 +1,8 @@
 /// Data model to hold information about the APOD
 
 class Apod {
+  final int id;
+
   /// Date the APOD was published, not when the photo or video was taken
   final DateTime? date;
 
@@ -33,6 +35,7 @@ class Apod {
   final String? videoUrl;
 
   const Apod({
+    required this.id,
     this.date,
     this.mediaType = MediaType.image,
     this.copyright = 'Public domain',
@@ -89,6 +92,7 @@ class Apod {
     final String copyright = json['copyright'] ?? 'Public domain';
 
     return Apod(
+      id: json['id'],
       date: date,
       mediaType: mediaType,
       copyright: copyright,

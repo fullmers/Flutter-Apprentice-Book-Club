@@ -12,6 +12,13 @@ class MockApodService {
     return currentApod;
   }
 
+  /// A painfully terrible implementation of fetching a single APOD,
+  /// but we'll tidy this up further during deep state management.
+  Future<Apod?> getSingleApod(int id) async {
+    final recentApods = await _getRecentApodList();
+    return recentApods.firstWhere((Apod apod) => apod.id == id);
+  }
+
   /// Request that gets a list of recent APOD
   Future<List<Apod>> getRecentApods() async {
     final recentApods = await _getRecentApodList();
@@ -29,7 +36,7 @@ class MockApodService {
   /// Get sample current Apod json to display in ui
   Future<Apod> _getCurrentApod() async {
     // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 200));
     // Load json from file system
     final dataString = await _loadAsset('assets/json/sample_current_apod.json');
     // Decode to json
@@ -41,7 +48,7 @@ class MockApodService {
   /// Get the recent Apod list from sample json to display on the recents tab
   Future<List<Apod>> _getRecentApodList() async {
     // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 200));
     // Load json from file system
     final dataString = await _loadAsset('assets/json/sample_recent_apods.json');
     // decode json
@@ -54,7 +61,7 @@ class MockApodService {
   /// Get the favorite Apod list from sample json to display on the favorites tab
   Future<List<Apod>> _getFavoriteApodList() async {
     // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 200));
     // Load json from file system
     final dataString =
         await _loadAsset('assets/json/sample_favorite_apods.json');
