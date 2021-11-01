@@ -1,8 +1,8 @@
-import 'package:apod/features/journal/journal.dart';
 import 'package:apod/models/models.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class JournalListView extends StatelessWidget {
   const JournalListView({Key? key}) : super(key: key);
@@ -15,22 +15,7 @@ class JournalListView extends StatelessWidget {
         return ListView.builder(
           itemCount: entries.length,
           itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              final manager =
-                  Provider.of<JournalManager>(context, listen: false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddJournalEntryPage(
-                    entry: entries[index],
-                    onSave: (item) {
-                      manager.updateItem(item, index);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              );
-            },
+            onTap: () => context.go('/journal/${entries[index].id}'),
             child: Dismissible(
               key: Key(entries[index].id),
               direction: DismissDirection.endToStart,
@@ -41,7 +26,7 @@ class JournalListView extends StatelessWidget {
                     color: Colors.white, size: 50.0),
               ),
               onDismissed: (direction) {
-                manager.deleteItem(index);
+                manager.deleteItem(entries[index]);
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('${entries[index].title} deleted')));
               },

@@ -1,7 +1,7 @@
-import 'package:apod/features/journal/add_journal_entry_page.dart';
 import 'package:apod/features/journal/journal.dart';
 import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class JournalPage extends StatelessWidget {
@@ -18,20 +18,7 @@ class JournalPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final manager = Provider.of<JournalManager>(context, listen: false);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddJournalEntryPage(
-                onSave: (item) {
-                  manager.addItem(item);
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-        },
+        onPressed: () => context.go('/journal-add'),
         child: const Icon(Icons.edit),
       ),
     );
