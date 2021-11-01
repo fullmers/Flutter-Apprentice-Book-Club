@@ -19,31 +19,24 @@ class Routes {
     pageBuilder: (BuildContext context, GoRouterState state) =>
         HomePage.page(key: state.pageKey),
     routes: [
-      addJournal,
-      editJournal,
+      writeJournal,
     ],
   );
 
-  static final addJournal = GoRoute(
-    name: 'addJournal',
-    path: 'journal-add',
-    pageBuilder: (BuildContext context, GoRouterState state) {
-      final journalManager =
-          Provider.of<JournalManager>(context, listen: false);
-
-      return AddJournalEntryPage.page(
-        onSave: journalManager.setItem,
-        entry: null,
-      );
-    },
-  );
-
-  static final editJournal = GoRoute(
+  static final writeJournal = GoRoute(
     name: 'editJournal',
     path: 'journal/:jid',
     pageBuilder: (BuildContext context, GoRouterState state) {
       final journalManager =
           Provider.of<JournalManager>(context, listen: false);
+
+      if (state.params['jid'] == 'add') {
+        // Handle /journal/add
+        return AddJournalEntryPage.page(
+          onSave: journalManager.setItem,
+          entry: null,
+        );
+      }
 
       return AddJournalEntryPage.page(
         onSave: journalManager.setItem,

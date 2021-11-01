@@ -18,7 +18,7 @@ class JournalPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/journal-add'),
+        onPressed: () => context.go('/journal/add'),
         child: const Icon(Icons.edit),
       ),
     );
