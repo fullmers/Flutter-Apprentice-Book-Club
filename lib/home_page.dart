@@ -12,6 +12,11 @@ class HomePage extends StatefulWidget {
 
   final String title;
 
+  static Page page({LocalKey? key}) => MaterialPage<void>(
+        key: key,
+        child: const HomePage(title: 'Astronomy Picture of the Day'),
+      );
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
