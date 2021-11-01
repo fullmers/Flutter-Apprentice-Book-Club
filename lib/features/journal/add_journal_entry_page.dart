@@ -11,6 +11,19 @@ class AddJournalEntryPage extends StatefulWidget {
   final JournalEntry? entry;
   final Function(JournalEntry) onSave;
 
+  static Page page({
+    required Function(JournalEntry) onSave,
+    JournalEntry? entry,
+    LocalKey? key,
+  }) =>
+      MaterialPage<void>(
+        key: key,
+        child: AddJournalEntryPage(
+          onSave: onSave,
+          entry: entry,
+        ),
+      );
+
   @override
   _AddJournalEntryPageState createState() => _AddJournalEntryPageState();
 }
@@ -45,6 +58,7 @@ class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
       date: date ?? DateTime.now(),
     );
     widget.onSave(entry);
+    Navigator.pop(context);
   }
 
   @override
