@@ -11,20 +11,24 @@ final goRouter = GoRouter(
       Routes.splash,
       Routes.home,
     ],
+    urlPathStrategy: UrlPathStrategy.path,
     refreshListenable: appStateManager,
     redirect: (GoRouterState state) {
       if (!appStateManager.isInitialized) {
         // If not initialized and not on the splash page,
         // go to the splash page.
-        if (state.subloc != Routes.splash.path) {
-          return Routes.splash.path;
+        if (state.location != Routes.splash.path) {
+          return Routes.splash.path + '?next=${state.location}';
         }
         // Staying on the splash page while initializing
         // is correct.
         return null;
       }
 
-      if (state.subloc == Routes.splash.path) {
+      if (state.location == Routes.splash.path) {
+        if (state.queryParams.containsKey('next')) {
+          return state.queryParams['next']!;
+        }
         return Routes.home.path;
       }
 
