@@ -26,24 +26,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TabManager>(builder: (context, tabManager, child) {
+    return Consumer<AppStateManager>(
+        builder: (context, appStateManager, child) {
       return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
         body: SafeArea(
           child: IndexedStack(
-            index: tabManager.selectedTab,
+            index: appStateManager.selectedTab,
             children: pages,
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: tabManager.selectedTab,
-          onTap: tabManager.goToTab,
-          // The above is equivalent to the below:
-          // onTap: (index) {
-          //   tabManager.goToTab(index);
-          // },
+          currentIndex: appStateManager.selectedTab,
+          onTap: appStateManager.goToTab,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Theme.of(context).colorScheme.secondary,
           items: const <BottomNavigationBarItem>[
