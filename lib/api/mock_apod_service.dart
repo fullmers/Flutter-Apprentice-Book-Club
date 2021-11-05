@@ -27,8 +27,8 @@ class MockApodService {
   }
 
   /// Request that gets favorited APODs
-  Future<List<Apod>> getFavoriteApods() async {
-    final favoriteApods = await _getFavoriteApodList();
+  Future<List<Apod>> getFavoriteApods(List<int> favoriteIds) async {
+    final favoriteApods = await _getFavoriteApodList(favoriteIds);
 
     return favoriteApods;
   }
@@ -59,17 +59,23 @@ class MockApodService {
   }
 
   /// Get the favorite Apod list from sample json to display on the favorites tab
-  Future<List<Apod>> _getFavoriteApodList() async {
-    // Simulate api request wait time
-    await Future.delayed(const Duration(milliseconds: 200));
-    // Load json from file system
-    final dataString =
-        await _loadAsset('assets/json/sample_favorite_apods.json');
-    // decode json
-    final apodList = json.decode(dataString);
-    List<Apod> favoriteApods = [];
-    apodList.forEach((e) => favoriteApods.add(Apod.fromJson(e)));
-    return favoriteApods;
+  Future<List<Apod>> _getFavoriteApodList(List<int> favoriteIds) async {
+    // Get all of the Apods
+    final recentApods = await _getRecentApodList();
+
+    // Prepare an efficient way to look them up by Id.
+    final recentApodsById = <int, Apod>{};
+    for (final recentApod in recentApods) {
+      recentApodsById[recentApod.id] = recentApod;
+    }
+
+    // Loop over all the favorite Ids and return each `Apod` instance.
+    return favoriteIds
+        .map<Apod>(
+          // Ignore the possibility of having a stale Id.
+          (int id) => recentApodsById[id]!,
+        )
+        .toList();
   }
 
   /// Loads sample json data from file system
