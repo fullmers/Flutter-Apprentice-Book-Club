@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'apod_theme.dart';
+import 'features/home/home.dart';
 import 'models/models.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class ApodApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => JournalManager()),
+        ChangeNotifierProvider(create: (context) => FavoritesManager()),
         ChangeNotifierProvider(create: (context) => appStateManager),
       ],
       child: MaterialApp.router(

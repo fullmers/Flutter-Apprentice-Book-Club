@@ -1,5 +1,7 @@
+import 'package:apod/features/home/tabs/favorite_apods/favorite_apods.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'apod_card_bottom.dart';
 import 'apod_card_top.dart';
@@ -33,6 +35,25 @@ class ApodCard extends StatelessWidget {
           Positioned(
             bottom: 0,
             child: ApodCardBottom(copyright: apod.copyright),
+          ),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: GestureDetector(
+              onTap: () {
+                context.read<FavoritesManager>().toggleFavorite(apod.id);
+              },
+              child: Consumer<FavoritesManager>(
+                builder: (context, favoritesManager, child) {
+                  return Icon(
+                    Icons.favorite,
+                    color: favoritesManager.isFavorited(apod.id)
+                        ? Colors.red[900]
+                        : Colors.white,
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
