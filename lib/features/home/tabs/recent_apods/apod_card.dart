@@ -45,11 +45,14 @@ class ApodCard extends StatelessWidget {
               },
               child: Consumer<FavoritesManager>(
                 builder: (context, favoritesManager, child) {
-                  return Icon(
-                    Icons.favorite,
-                    color: favoritesManager.isFavorited(apod.id)
-                        ? Colors.red[900]
-                        : Colors.white,
+                  return FutureBuilder<bool>(
+                    future: favoritesManager.isFavorited(apod.id),
+                    builder: (context, AsyncSnapshot<bool> snapshot) {
+                      final isSelected =
+                          !snapshot.hasData ? false : snapshot.data!;
+                      final color = isSelected ? Colors.red[900] : Colors.white;
+                      return Icon(Icons.favorite, color: color);
+                    },
                   );
                 },
               ),

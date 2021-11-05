@@ -1,27 +1,30 @@
-import 'package:apod/features/shared/models/persistence.dart';
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/mock_apod_service.dart';
 import 'apod_theme.dart';
 import 'features/home/home.dart';
 import 'features/shared/models/models.dart';
 import 'models/models.dart';
 
-late SharedPreferences sharedPreferences;
 late Repository<Apod> apodRepository;
 
 void main() async {
   /// This is required if we want to access platform channels.
   WidgetsFlutterBinding.ensureInitialized();
   appStateManager.initializeApp();
-  sharedPreferences = await SharedPreferences.getInstance();
   apodRepository = Repository<Apod>(
     sourceList: [
       LocalMemorySource<Apod>(),
     ],
   );
+
+  /// This is cheating! In Chapters 10 and 11, we will replace this with real
+  /// calls to the APOD API.
+  final apodService = MockApodService();
+  (await apodService.getRecentApods()).forEach(apodRepository.setItem);
+
   runApp(const ApodApp());
 }
 
@@ -34,9 +37,7 @@ class ApodApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => JournalManager()),
         ChangeNotifierProvider(
-          create: (context) => FavoritesManager(
-            SharedPreferencesPersistence(sharedPreferences),
-          ),
+          create: (context) => FavoritesManager(apodRepository),
         ),
         ChangeNotifierProvider.value(value: appStateManager),
       ],

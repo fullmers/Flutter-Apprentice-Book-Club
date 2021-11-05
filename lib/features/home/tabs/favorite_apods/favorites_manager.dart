@@ -1,49 +1,27 @@
-import 'package:apod/features/shared/models/persistence.dart';
+import 'package:apod/features/shared/models/models.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesManager extends ChangeNotifier {
-  /// Public constructor which accepts a [SharedPreferences] instance
+  /// Public constructor which accepts a `Repository<Repo>` instance
   /// for long-lived persistence of favorites.
-  FavoritesManager(this._persistence) {
-    _readFromPersistence();
-  }
+  FavoritesManager(this._repository);
 
-  static const _storageKey = 'apod-favorites';
-  final Set<String> _favoriteIds = <String>{};
-  final Persistence _persistence;
+  final Repository<Apod> _repository;
 
-  void _addFavorite(String id) {
-    _favoriteIds.add(id);
-    _syncToPersistence();
+  Future<void> toggleFavorite(String id) async {
+    _repository.toggleFavorite(id);
     notifyListeners();
   }
 
-  void _removeFavorite(String id) {
-    _favoriteIds.remove(id);
-    _syncToPersistence();
-    notifyListeners();
-  }
+  Future<List<String>> get favoriteIds async => _repository.getFavoriteIds();
 
-  void _syncToPersistence() {
-    final _idsAsString =
-        favoriteIds.map<String>((String id) => id.toString()).join(',');
-    _persistence.setKey(_storageKey, _idsAsString);
-  }
+  Future<bool> isFavorited(String id) async => (await favoriteIds).contains(id);
 
-  void _readFromPersistence() {
-    final String? _idsAsString = _persistence.getKey(_storageKey);
-    if (_idsAsString != null) {
-      _favoriteIds.addAll(
-        _idsAsString.split(',').toSet(),
-      );
+  Future<List<Apod>> getFavoriteApods() async {
+    final favApods = <Apod>[];
+    for (String id in (await favoriteIds)) {
+      favApods.add((await _repository.getItem(id))!);
     }
+    return favApods;
   }
-
-  void toggleFavorite(String id) =>
-      isFavorited(id) ? _removeFavorite(id) : _addFavorite(id);
-
-  Set<String> get favoriteIds => _favoriteIds;
-
-  bool isFavorited(String id) => _favoriteIds.contains(id);
 }
