@@ -1,20 +1,42 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesManager extends ChangeNotifier {
+  /// Public constructor which accepts a [SharedPreferences] instance
+  /// for long-lived persistence of favorites.
+  FavoritesManager(this._sharedPreferences) {
+    _readFromPersistence();
+  }
+
+  static const _storageKey = 'apod-favorites';
   final Set<int> _favoriteIds = <int>{};
+  final SharedPreferences _sharedPreferences;
 
   void _addFavorite(int id) {
     _favoriteIds.add(id);
-    // ignore: avoid_print
-    print('Favorites: $_favoriteIds');
+    _syncToPersistence();
     notifyListeners();
   }
 
   void _removeFavorite(int id) {
     _favoriteIds.remove(id);
-    // ignore: avoid_print
-    print('Favorites: $_favoriteIds');
+    _syncToPersistence();
     notifyListeners();
+  }
+
+  void _syncToPersistence() {
+    final _idsAsString =
+        favoriteIds.map<String>((int id) => id.toString()).join(',');
+    _sharedPreferences.setString(_storageKey, _idsAsString);
+  }
+
+  void _readFromPersistence() {
+    final String? _idsAsString = _sharedPreferences.getString(_storageKey);
+    if (_idsAsString != null) {
+      _favoriteIds.addAll(
+        _idsAsString.split(',').map<int>((String id) => int.parse(id)).toSet(),
+      );
+    }
   }
 
   void toggleFavorite(int id) =>
