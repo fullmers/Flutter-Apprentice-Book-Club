@@ -10,16 +10,16 @@ class FavoritesManager extends ChangeNotifier {
   }
 
   static const _storageKey = 'apod-favorites';
-  final Set<int> _favoriteIds = <int>{};
+  final Set<String> _favoriteIds = <String>{};
   final Persistence _persistence;
 
-  void _addFavorite(int id) {
+  void _addFavorite(String id) {
     _favoriteIds.add(id);
     _syncToPersistence();
     notifyListeners();
   }
 
-  void _removeFavorite(int id) {
+  void _removeFavorite(String id) {
     _favoriteIds.remove(id);
     _syncToPersistence();
     notifyListeners();
@@ -27,7 +27,7 @@ class FavoritesManager extends ChangeNotifier {
 
   void _syncToPersistence() {
     final _idsAsString =
-        favoriteIds.map<String>((int id) => id.toString()).join(',');
+        favoriteIds.map<String>((String id) => id.toString()).join(',');
     _persistence.setKey(_storageKey, _idsAsString);
   }
 
@@ -35,15 +35,15 @@ class FavoritesManager extends ChangeNotifier {
     final String? _idsAsString = _persistence.getKey(_storageKey);
     if (_idsAsString != null) {
       _favoriteIds.addAll(
-        _idsAsString.split(',').map<int>((String id) => int.parse(id)).toSet(),
+        _idsAsString.split(',').toSet(),
       );
     }
   }
 
-  void toggleFavorite(int id) =>
+  void toggleFavorite(String id) =>
       isFavorited(id) ? _removeFavorite(id) : _addFavorite(id);
 
-  Set<int> get favoriteIds => _favoriteIds;
+  Set<String> get favoriteIds => _favoriteIds;
 
-  bool isFavorited(int id) => _favoriteIds.contains(id);
+  bool isFavorited(String id) => _favoriteIds.contains(id);
 }

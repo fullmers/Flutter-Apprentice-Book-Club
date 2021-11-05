@@ -14,7 +14,7 @@ class MockApodService {
 
   /// A painfully terrible implementation of fetching a single APOD,
   /// but we'll tidy this up further during deep state management.
-  Future<Apod?> getSingleApod(int id) async {
+  Future<Apod?> getSingleApod(String id) async {
     final recentApods = await _getRecentApodList();
     return recentApods.firstWhere((Apod apod) => apod.id == id);
   }
@@ -27,7 +27,7 @@ class MockApodService {
   }
 
   /// Request that gets favorited APODs
-  Future<List<Apod>> getFavoriteApods(List<int> favoriteIds) async {
+  Future<List<Apod>> getFavoriteApods(List<String> favoriteIds) async {
     final favoriteApods = await _getFavoriteApodList(favoriteIds);
 
     return favoriteApods;
@@ -59,12 +59,12 @@ class MockApodService {
   }
 
   /// Get the favorite Apod list from sample json to display on the favorites tab
-  Future<List<Apod>> _getFavoriteApodList(List<int> favoriteIds) async {
+  Future<List<Apod>> _getFavoriteApodList(List<String> favoriteIds) async {
     // Get all of the Apods
     final recentApods = await _getRecentApodList();
 
     // Prepare an efficient way to look them up by Id.
-    final recentApodsById = <int, Apod>{};
+    final recentApodsById = <String, Apod>{};
     for (final recentApod in recentApods) {
       recentApodsById[recentApod.id] = recentApod;
     }
@@ -73,7 +73,7 @@ class MockApodService {
     return favoriteIds
         .map<Apod>(
           // Ignore the possibility of having a stale Id.
-          (int id) => recentApodsById[id]!,
+          (String id) => recentApodsById[id]!,
         )
         .toList();
   }

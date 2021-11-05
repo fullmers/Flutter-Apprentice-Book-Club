@@ -28,7 +28,7 @@ class Routes {
     name: 'apodDetail',
     path: 'apod/:id',
     pageBuilder: (BuildContext context, GoRouterState state) =>
-        ApodDetail.page(id: int.parse(state.params['id']!)),
+        ApodDetail.page(id: state.params['id']!),
   );
 
   static final writeJournal = GoRoute(

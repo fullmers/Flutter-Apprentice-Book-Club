@@ -1,7 +1,19 @@
+import 'models.dart';
+
 /// Data model to hold information about the APOD
 
-class Apod {
-  final int id;
+class Apod extends DataModel {
+  const Apod({
+    required String id,
+    this.date,
+    this.mediaType = MediaType.image,
+    this.copyright = 'Public domain',
+    this.title = '',
+    this.explanation = '',
+    this.displayImageUrl = '',
+    this.hdUrl,
+    this.videoUrl,
+  }) : super(id: id);
 
   /// Date the APOD was published, not when the photo or video was taken
   final DateTime? date;
@@ -34,17 +46,17 @@ class Apod {
   /// Null if it is an image.
   final String? videoUrl;
 
-  const Apod({
-    required this.id,
-    this.date,
-    this.mediaType = MediaType.image,
-    this.copyright = 'Public domain',
-    this.title = '',
-    this.explanation = '',
-    this.displayImageUrl = '',
-    this.hdUrl,
-    this.videoUrl,
-  });
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'date': date,
+        'mediaType': mediaType,
+        'copyright': copyright,
+        'title': title,
+        'explanation': explanation,
+        'displayImageUrl': displayImageUrl,
+        'hdUrl': hdUrl,
+        'videoUrl': videoUrl,
+      };
 
   /// create an Apod using json data from the API (mocked service or real)
   /// Note: The logic in this method is something we would generally want handled on the
@@ -92,7 +104,7 @@ class Apod {
     final String copyright = json['copyright'] ?? 'Public domain';
 
     return Apod(
-      id: json['id'],
+      id: json['id'].toString(),
       date: date,
       mediaType: mediaType,
       copyright: copyright,

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ApodDetail extends StatefulWidget {
-  final int id;
+  final String id;
 
   const ApodDetail({Key? key, required this.id}) : super(key: key);
 
   static Page page({
-    required int id,
+    required String id,
     LocalKey? key,
   }) =>
       MaterialPage<void>(
