@@ -1,8 +1,7 @@
+import 'package:apod/apod_theme.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../apod_theme.dart';
 
 class FullScreenApod extends StatelessWidget {
   final Apod apod;

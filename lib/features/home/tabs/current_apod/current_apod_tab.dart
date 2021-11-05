@@ -1,8 +1,8 @@
+import 'package:apod/api/mock_apod_service.dart';
+import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../api/mock_apod_service.dart';
-import '../shared/models/apod.dart';
 import 'full_screen_apod.dart';
 
 class CurrentApodPage extends StatelessWidget {

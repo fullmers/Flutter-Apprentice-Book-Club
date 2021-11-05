@@ -1,7 +1,6 @@
-import 'package:apod/features/journal/journal.dart';
+import 'package:apod/features/home/home.dart';
 import 'package:apod/features/shared/widgets/apod_detail.dart';
 import 'package:apod/features/splash/splash_page.dart';
-import 'package:apod/home_page.dart';
 import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

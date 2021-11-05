@@ -1,7 +1,8 @@
 import 'package:apod/api/mock_apod_service.dart';
-import 'package:apod/features/favorite_apods/apod_thumbnail.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
+
+import 'apod_thumbnail.dart';
 
 class FavoritesApodPage extends StatelessWidget {
   const FavoritesApodPage({Key? key}) : super(key: key);

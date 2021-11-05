@@ -1,8 +1,9 @@
-import 'package:apod/features/journal/journal.dart';
 import 'package:apod/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
+import 'journal.dart';
 
 class JournalPage extends StatelessWidget {
   const JournalPage({Key? key}) : super(key: key);
