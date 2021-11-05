@@ -1,3 +1,4 @@
+import 'package:apod/features/shared/models/persistence.dart';
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,13 +8,13 @@ import 'apod_theme.dart';
 import 'features/home/home.dart';
 import 'models/models.dart';
 
-late SharedPreferences sharedPrefs;
+late SharedPreferences sharedPreferences;
 
 void main() async {
   /// This is required if we want to access platform channels.
   WidgetsFlutterBinding.ensureInitialized();
   appStateManager.initializeApp();
-  sharedPrefs = await SharedPreferences.getInstance();
+  sharedPreferences = await SharedPreferences.getInstance();
   runApp(const ApodApp());
 }
 
@@ -26,7 +27,9 @@ class ApodApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => JournalManager()),
         ChangeNotifierProvider(
-          create: (context) => FavoritesManager(sharedPrefs),
+          create: (context) => FavoritesManager(
+            SharedPreferencesPersistence(sharedPreferences),
+          ),
         ),
         ChangeNotifierProvider(create: (context) => appStateManager),
       ],
