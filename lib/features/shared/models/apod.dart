@@ -46,16 +46,18 @@ class Apod extends DataModel {
   /// Null if it is an image.
   final String? videoUrl;
 
+  @override
+  String toString() => 'Apod($id)';
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'date': date,
-        'mediaType': mediaType,
+        'media_type': mediaType.toString().split('.')[1],
         'copyright': copyright,
         'title': title,
         'explanation': explanation,
-        'displayImageUrl': displayImageUrl,
-        'hdUrl': hdUrl,
-        'videoUrl': videoUrl,
+        'hdurl': hdUrl,
+        'url': mediaType == MediaType.video ? videoUrl : displayImageUrl,
       };
 
   /// create an Apod using json data from the API (mocked service or real)
@@ -64,14 +66,19 @@ class Apod extends DataModel {
   factory Apod.fromJson(Map<String, dynamic> json) {
     // the API returns a string in the form YYYY-MM-DD. Here we parse and turn
     // it into the DateTime object required by the Apod constructor
-    final String dateString = json['date'];
-    final dateParts = dateString.split('-');
     DateTime? date;
-    if (dateParts.length == 3) {
-      final year = int.parse(dateParts[0]);
-      final month = int.parse(dateParts[1]);
-      final day = int.parse(dateParts[2]);
-      date = DateTime(year, month, day);
+    final rawDate = json['date'];
+
+    if (rawDate is String) {
+      final dateParts = rawDate.split('-');
+      if (dateParts.length == 3) {
+        final year = int.parse(dateParts[0]);
+        final month = int.parse(dateParts[1]);
+        final day = int.parse(dateParts[2]);
+        date = DateTime(year, month, day);
+      }
+    } else if (rawDate is DateTime) {
+      date = rawDate;
     }
 
     final mediaType =

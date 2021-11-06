@@ -19,8 +19,10 @@ class FavoritesManager extends ChangeNotifier {
 
   Future<List<Apod>> getFavoriteApods() async {
     final favApods = <Apod>[];
-    for (String id in (await favoriteIds)) {
-      favApods.add((await _repository.getItem(id))!);
+    final _favoriteIds = await favoriteIds;
+    for (String id in _favoriteIds) {
+      final obj = (await _repository.getItem(id))!;
+      favApods.add(obj);
     }
     return favApods;
   }

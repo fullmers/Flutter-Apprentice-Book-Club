@@ -1,5 +1,6 @@
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'api/mock_apod_service.dart';
@@ -11,12 +12,23 @@ import 'models/models.dart';
 late Repository<Apod> apodRepository;
 
 void main() async {
-  /// This is required if we want to access platform channels.
+  // This is required if we want to access platform channels.
   WidgetsFlutterBinding.ensureInitialized();
   appStateManager.initializeApp();
+
+  // Initialize Hive and a persistence wrapper
+  await Hive.initFlutter();
+  final apodHive = LocalPersistenceSource<Apod>(
+    fromJson: (Map<String, dynamic> data) => Apod.fromJson(data),
+    toJson: (Apod obj) => obj.toJson(),
+  );
+  await apodHive.ready();
+
+  // Create the fully Repository
   apodRepository = Repository<Apod>(
     sourceList: [
       LocalMemorySource<Apod>(),
+      apodHive,
     ],
   );
 
