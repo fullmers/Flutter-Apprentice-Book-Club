@@ -37,7 +37,10 @@ class ApodApi {
   /// Sends a request to the Apod Api and returns a list of results.
   Future<List<Map<String, dynamic>>?> list({
     ApodRequestParameters params = const ApodRequestParameters(),
-  }) async {}
+  }) async {
+    final List<dynamic> resp = await _request(params: params);
+    return resp.cast<Map<String, dynamic>>();
+  }
 
   /// Sends a request to the Apod Api and returns a single result.
   Future<Map<String, dynamic>?> detail({

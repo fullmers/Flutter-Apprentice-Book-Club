@@ -6,6 +6,9 @@ import 'models.dart';
 class ApiSource<T extends DataModel> extends Source<T> {
   ApiSource({required this.api, required this.fromJson});
 
+  @override
+  SourceType type = SourceType.remote;
+
   final ApodApi api;
   final T Function(Map<String, dynamic> json) fromJson;
 
@@ -44,7 +47,7 @@ class ApiSource<T extends DataModel> extends Source<T> {
     // value found under the "date" key into the "id" key.
     if (data != null) {
       for (final _entry in data) {
-        _entry['id'] = _entry['data'];
+        _entry['id'] = _entry['date'];
       }
     }
 

@@ -32,4 +32,9 @@ abstract class DataContract<T extends DataModel> {
 }
 
 /// Type of [DataContract] subclass that is responsible for yielding real data.
-abstract class Source<T extends DataModel> extends DataContract<T> {}
+abstract class Source<T extends DataModel> extends DataContract<T> {
+  SourceType get type;
+}
+
+enum RequestType { local, remote, any }
+enum SourceType { local, remote }

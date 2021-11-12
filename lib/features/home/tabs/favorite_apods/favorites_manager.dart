@@ -19,7 +19,13 @@ class FavoritesManager extends ChangeNotifier {
     return _repository.getItem(date.dateString());
   }
 
-  Future<List<Apod>?> getRecentApods() => _repository.getItems();
+  Future<List<Apod>?> getRecentApods({int minDesired = 15}) async {
+    List<Apod> items = await _repository.getItems();
+    if (items.length < minDesired) {
+      items = await _repository.getItems(type: RequestType.remote);
+    }
+    return items..sort((a, b) => b.id.compareTo(a.id));
+  }
 
   Future<List<String>> get favoriteIds async => _repository.getFavoriteIds();
 

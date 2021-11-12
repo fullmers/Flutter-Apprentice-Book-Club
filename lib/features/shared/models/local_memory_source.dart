@@ -5,6 +5,9 @@ class LocalMemorySource<T extends DataModel> extends Source<T> {
       : _items = <String, T>{},
         _favoritedIds = <String>{};
 
+  @override
+  SourceType type = SourceType.local;
+
   final Map<String, T> _items;
   final Set<String> _favoritedIds;
 

@@ -5,6 +5,13 @@ class Repository<T extends DataModel> extends DataContract<T> {
 
   final List<Source<T>> sourceList;
 
+  bool isMatchedSource(Source source, RequestType type) {
+    if (type == RequestType.any) return true;
+    return source.type == SourceType.local
+        ? type == RequestType.local
+        : type == RequestType.remote;
+  }
+
   @override
   Future<List<String>> getFavoriteIds() async {
     final emptySources = <Source<T>>[];
@@ -64,15 +71,22 @@ class Repository<T extends DataModel> extends DataContract<T> {
   }
 
   @override
-  Future<List<T>> getItems() async {
+  Future<List<T>> getItems({
+    RequestType type = RequestType.any,
+  }) async {
     final emptySources = <Source<T>>[];
     List<T> items = [];
 
     // Check each [Source] for an answer.
     for (final source in sourceList) {
-      items = await source.getItems();
+      // For now, only implemented `RequestType` functionality on `getItems()`,
+      // but, of course, it could be implemented on every method.
+      if (!isMatchedSource(source, type)) {
+        emptySources.add(source);
+        continue;
+      }
 
-      print('getItems: $source :: $items');
+      items = await source.getItems();
 
       // Note which sources have no info.
       if (items.isEmpty) {

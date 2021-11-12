@@ -7,6 +7,9 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
     required this.toJson,
   });
 
+  @override
+  SourceType type = SourceType.local;
+
   // <String, T>
   late Box _itemsBox;
 
