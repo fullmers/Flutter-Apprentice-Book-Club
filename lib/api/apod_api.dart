@@ -15,9 +15,6 @@ class ApodApi {
   static const baseUrl = 'https://api.nasa.gov/planetary/apod';
 
   /// Sends actual network requests to the Apod API.
-  ///
-  /// Returns a raw [http.Response] object, which is currently awkward for any
-  /// code that uses this class.
   Future<T?> read<T>({
     ApodRequestParameters params = const ApodRequestParameters(),
   }) async {
