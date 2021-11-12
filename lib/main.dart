@@ -38,11 +38,6 @@ void main() async {
     ],
   );
 
-  /// This is cheating! In Chapters 10 and 11, we will replace this with real
-  /// calls to the APOD API.
-  // final apodService = MockApodService();
-  // (await apodService.getRecentApods()).forEach(apodRepository.setItem);
-
   runApp(const ApodApp());
 }
 
