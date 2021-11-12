@@ -22,8 +22,7 @@ class _$ApodTearOff {
   const _$ApodTearOff();
 
   _Apod call(
-      {@StringIdConverter()
-          required String id,
+      {required String id,
       DateTime? date,
       @JsonKey(name: 'media_type')
       @MediaTypeConverter()
@@ -56,7 +55,6 @@ const $Apod = _$ApodTearOff();
 
 /// @nodoc
 mixin _$Apod {
-  @StringIdConverter()
   String get id => throw _privateConstructorUsedError;
 
   /// Date the APOD was published, not when the photo or video was taken
@@ -95,7 +93,7 @@ abstract class $ApodCopyWith<$Res> {
   factory $ApodCopyWith(Apod value, $Res Function(Apod) then) =
       _$ApodCopyWithImpl<$Res>;
   $Res call(
-      {@StringIdConverter() String id,
+      {String id,
       DateTime? date,
       @JsonKey(name: 'media_type') @MediaTypeConverter() MediaType mediaType,
       String copyright,
@@ -167,7 +165,7 @@ abstract class _$ApodCopyWith<$Res> implements $ApodCopyWith<$Res> {
       __$ApodCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@StringIdConverter() String id,
+      {String id,
       DateTime? date,
       @JsonKey(name: 'media_type') @MediaTypeConverter() MediaType mediaType,
       String copyright,
@@ -239,8 +237,7 @@ class __$ApodCopyWithImpl<$Res> extends _$ApodCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_Apod extends _Apod {
   const _$_Apod(
-      {@StringIdConverter()
-          required this.id,
+      {required this.id,
       this.date,
       @JsonKey(name: 'media_type')
       @MediaTypeConverter()
@@ -256,7 +253,6 @@ class _$_Apod extends _Apod {
   factory _$_Apod.fromJson(Map<String, dynamic> json) => _$$_ApodFromJson(json);
 
   @override
-  @StringIdConverter()
   final String id;
   @override
 
@@ -337,7 +333,7 @@ class _$_Apod extends _Apod {
 
 abstract class _Apod extends Apod {
   const factory _Apod(
-      {@StringIdConverter() required String id,
+      {required String id,
       DateTime? date,
       @JsonKey(name: 'media_type') @MediaTypeConverter() MediaType mediaType,
       String copyright,
@@ -350,7 +346,6 @@ abstract class _Apod extends Apod {
   factory _Apod.fromJson(Map<String, dynamic> json) = _$_Apod.fromJson;
 
   @override
-  @StringIdConverter()
   String get id;
   @override
 

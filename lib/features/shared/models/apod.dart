@@ -10,7 +10,7 @@ part 'apod.g.dart';
 class Apod extends DataModel with _$Apod {
   @JsonSerializable(explicitToJson: true)
   const factory Apod({
-    @StringIdConverter() required String id,
+    required String id,
 
     /// Date the APOD was published, not when the photo or video was taken
     DateTime? date,
@@ -90,21 +90,6 @@ class MediaTypeConverter implements JsonConverter<MediaType, String> {
 
   @override
   String toJson(MediaType type) => type.toString().split('.')[1];
-}
-
-/// JSON converter helper for the `id` field.
-///
-/// We think of them as `String`s, but the Apod API thinks of them as `int`s.
-///
-/// Might be tempted to make this private, but it should be tested.
-class StringIdConverter implements JsonConverter<String, int> {
-  const StringIdConverter();
-
-  @override
-  String fromJson(int id) => id.toString();
-
-  @override
-  int toJson(String id) => int.parse(id);
 }
 
 /// Used to specify whether the Apod is an image or video

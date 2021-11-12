@@ -7,7 +7,7 @@ part of 'apod.dart';
 // **************************************************************************
 
 _$_Apod _$$_ApodFromJson(Map<String, dynamic> json) => _$_Apod(
-      id: const StringIdConverter().fromJson(json['id'] as int),
+      id: json['id'] as String,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       mediaType: json['media_type'] == null
@@ -21,7 +21,7 @@ _$_Apod _$$_ApodFromJson(Map<String, dynamic> json) => _$_Apod(
     );
 
 Map<String, dynamic> _$$_ApodToJson(_$_Apod instance) => <String, dynamic>{
-      'id': const StringIdConverter().toJson(instance.id),
+      'id': instance.id,
       'date': instance.date?.toIso8601String(),
       'media_type': const MediaTypeConverter().toJson(instance.mediaType),
       'copyright': instance.copyright,
