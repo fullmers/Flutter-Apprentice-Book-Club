@@ -10,9 +10,9 @@ _$_ApodRequestParameters _$$_ApodRequestParametersFromJson(
         Map<String, dynamic> json) =>
     _$_ApodRequestParameters(
       startDate: const OptionalDateTimeConverter()
-          .fromJson(json['startDate'] as String),
-      endDate:
-          const OptionalDateTimeConverter().fromJson(json['endDate'] as String),
+          .fromJson(json['start_date'] as String),
+      endDate: const OptionalDateTimeConverter()
+          .fromJson(json['end_date'] as String),
       date: const OptionalDateTimeConverter().fromJson(json['date'] as String),
       count: json['count'] as int?,
     );
@@ -20,8 +20,9 @@ _$_ApodRequestParameters _$$_ApodRequestParametersFromJson(
 Map<String, dynamic> _$$_ApodRequestParametersToJson(
         _$_ApodRequestParameters instance) =>
     <String, dynamic>{
-      'startDate': const OptionalDateTimeConverter().toJson(instance.startDate),
-      'endDate': const OptionalDateTimeConverter().toJson(instance.endDate),
+      'start_date':
+          const OptionalDateTimeConverter().toJson(instance.startDate),
+      'end_date': const OptionalDateTimeConverter().toJson(instance.endDate),
       'date': const OptionalDateTimeConverter().toJson(instance.date),
       'count': instance.count,
     };

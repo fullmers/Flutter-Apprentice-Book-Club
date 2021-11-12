@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 import 'dart:convert';
 
+import 'package:apod/features/shared/extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'secrets.dart';
@@ -14,29 +15,49 @@ class ApodApi {
 
   static const baseUrl = 'https://api.nasa.gov/planetary/apod';
 
-  /// Sends actual network requests to the Apod API.
-  Future<T?> read<T>({
+  Future<dynamic>? _request({
     ApodRequestParameters params = const ApodRequestParameters(),
   }) async {
-    final uri = Uri(
-      host: baseUrl,
-      queryParameters: params.toJson()..addAll({'api_key': apodApiKey}),
+    final uri = Uri.parse(baseUrl).replace(
+      queryParameters: flattenParameters(params)
+        ..addAll({'api_key': apodApiKey}),
     );
     final resp = await http.get(uri);
-
     // Convert "200 OK" responses into JSON.
     if (resp.statusCode == 200) {
       return resp.bodyBytes.isNotEmpty
-          ? jsonDecode(utf8.decoder.convert(resp.bodyBytes)) as T
+          ? jsonDecode(utf8.decoder.convert(resp.bodyBytes))
           : null;
+    } else {
+      // ignore: avoid_print
+      print(resp.body);
     }
   }
+
+  /// Sends a request to the Apod Api and returns a list of results.
+  Future<List<Map<String, dynamic>>?> list({
+    ApodRequestParameters params = const ApodRequestParameters(),
+  }) async {}
+
+  /// Sends a request to the Apod Api and returns a single result.
+  Future<Map<String, dynamic>?> detail({
+    ApodRequestParameters params = const ApodRequestParameters(),
+  }) async {
+    final Map<dynamic, dynamic> resp = await _request(params: params);
+    return resp.cast<String, dynamic>();
+  }
+
+  Map<String, dynamic> flattenParameters(ApodRequestParameters params) =>
+      params.toJson()
+        ..removeWhere((key, value) => value == null || value == '');
 }
 
 /// Container for customization of [ApodApi] requests.
 @Freezed()
 class ApodRequestParameters with _$ApodRequestParameters {
   const ApodRequestParameters._();
+
+  @JsonSerializable(explicitToJson: true)
   const factory ApodRequestParameters({
     /// Optional filter for the earliest date from which we desire results.
     @OptionalDateTimeConverter()
@@ -65,8 +86,4 @@ class OptionalDateTimeConverter extends JsonConverter<DateTime?, String> {
 
   @override
   String toJson(DateTime? object) => object != null ? object.dateString() : '';
-}
-
-extension on DateTime {
-  String dateString() => '$year-$month-$day';
 }

@@ -23,9 +23,14 @@ class _$ApodRequestParametersTearOff {
   const _$ApodRequestParametersTearOff();
 
   _ApodRequestParameters call(
-      {@OptionalDateTimeConverter() DateTime? startDate,
-      @OptionalDateTimeConverter() DateTime? endDate,
-      @OptionalDateTimeConverter() DateTime? date,
+      {@OptionalDateTimeConverter()
+      @JsonKey(name: 'start_date')
+          DateTime? startDate,
+      @OptionalDateTimeConverter()
+      @JsonKey(name: 'end_date')
+          DateTime? endDate,
+      @OptionalDateTimeConverter()
+          DateTime? date,
       int? count}) {
     return _ApodRequestParameters(
       startDate: startDate,
@@ -45,12 +50,21 @@ const $ApodRequestParameters = _$ApodRequestParametersTearOff();
 
 /// @nodoc
 mixin _$ApodRequestParameters {
+  /// Optional filter for the earliest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'start_date')
   DateTime? get startDate => throw _privateConstructorUsedError;
+
+  /// Optional filter for the latest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'end_date')
   DateTime? get endDate => throw _privateConstructorUsedError;
+
+  /// Optional filter for only date from which we desire results.
   @OptionalDateTimeConverter()
   DateTime? get date => throw _privateConstructorUsedError;
+
+  /// Optional limit to how many results should be returned.
   int? get count => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,9 +79,14 @@ abstract class $ApodRequestParametersCopyWith<$Res> {
           $Res Function(ApodRequestParameters) then) =
       _$ApodRequestParametersCopyWithImpl<$Res>;
   $Res call(
-      {@OptionalDateTimeConverter() DateTime? startDate,
-      @OptionalDateTimeConverter() DateTime? endDate,
-      @OptionalDateTimeConverter() DateTime? date,
+      {@OptionalDateTimeConverter()
+      @JsonKey(name: 'start_date')
+          DateTime? startDate,
+      @OptionalDateTimeConverter()
+      @JsonKey(name: 'end_date')
+          DateTime? endDate,
+      @OptionalDateTimeConverter()
+          DateTime? date,
       int? count});
 }
 
@@ -116,9 +135,14 @@ abstract class _$ApodRequestParametersCopyWith<$Res>
       __$ApodRequestParametersCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@OptionalDateTimeConverter() DateTime? startDate,
-      @OptionalDateTimeConverter() DateTime? endDate,
-      @OptionalDateTimeConverter() DateTime? date,
+      {@OptionalDateTimeConverter()
+      @JsonKey(name: 'start_date')
+          DateTime? startDate,
+      @OptionalDateTimeConverter()
+      @JsonKey(name: 'end_date')
+          DateTime? endDate,
+      @OptionalDateTimeConverter()
+          DateTime? date,
       int? count});
 }
 
@@ -162,11 +186,12 @@ class __$ApodRequestParametersCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$_ApodRequestParameters extends _ApodRequestParameters {
   const _$_ApodRequestParameters(
-      {@OptionalDateTimeConverter() this.startDate,
-      @OptionalDateTimeConverter() this.endDate,
+      {@OptionalDateTimeConverter() @JsonKey(name: 'start_date') this.startDate,
+      @OptionalDateTimeConverter() @JsonKey(name: 'end_date') this.endDate,
       @OptionalDateTimeConverter() this.date,
       this.count})
       : super._();
@@ -175,15 +200,25 @@ class _$_ApodRequestParameters extends _ApodRequestParameters {
       _$$_ApodRequestParametersFromJson(json);
 
   @override
+
+  /// Optional filter for the earliest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'start_date')
   final DateTime? startDate;
   @override
+
+  /// Optional filter for the latest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'end_date')
   final DateTime? endDate;
   @override
+
+  /// Optional filter for only date from which we desire results.
   @OptionalDateTimeConverter()
   final DateTime? date;
   @override
+
+  /// Optional limit to how many results should be returned.
   final int? count;
 
   @override
@@ -220,9 +255,14 @@ class _$_ApodRequestParameters extends _ApodRequestParameters {
 
 abstract class _ApodRequestParameters extends ApodRequestParameters {
   const factory _ApodRequestParameters(
-      {@OptionalDateTimeConverter() DateTime? startDate,
-      @OptionalDateTimeConverter() DateTime? endDate,
-      @OptionalDateTimeConverter() DateTime? date,
+      {@OptionalDateTimeConverter()
+      @JsonKey(name: 'start_date')
+          DateTime? startDate,
+      @OptionalDateTimeConverter()
+      @JsonKey(name: 'end_date')
+          DateTime? endDate,
+      @OptionalDateTimeConverter()
+          DateTime? date,
       int? count}) = _$_ApodRequestParameters;
   const _ApodRequestParameters._() : super._();
 
@@ -230,15 +270,25 @@ abstract class _ApodRequestParameters extends ApodRequestParameters {
       _$_ApodRequestParameters.fromJson;
 
   @override
+
+  /// Optional filter for the earliest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'start_date')
   DateTime? get startDate;
   @override
+
+  /// Optional filter for the latest date from which we desire results.
   @OptionalDateTimeConverter()
+  @JsonKey(name: 'end_date')
   DateTime? get endDate;
   @override
+
+  /// Optional filter for only date from which we desire results.
   @OptionalDateTimeConverter()
   DateTime? get date;
   @override
+
+  /// Optional limit to how many results should be returned.
   int? get count;
   @override
   @JsonKey(ignore: true)
