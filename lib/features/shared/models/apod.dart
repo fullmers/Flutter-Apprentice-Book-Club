@@ -7,8 +7,6 @@ part 'apod.g.dart';
 /// Data model to hold information about the APOD
 @Freezed()
 class Apod extends DataModel with _$Apod {
-  const Apod._() : super(id: '');
-
   @JsonSerializable(explicitToJson: true)
   const factory Apod({
     @StringIdConverter() required String id,
@@ -39,6 +37,11 @@ class Apod extends DataModel with _$Apod {
     /// Thumbnail URL. Null if it is an image.
     @JsonKey(name: 'thumbnail_url') String? thumbnailUrl,
   }) = _Apod;
+
+  // Super secret constructor which is just used to make the analysis engine
+  // happy. This is required for Freezed to wire up `getter`s, but is never
+  // actually used.
+  const Apod._() : super(id: '');
 
   /// Optional url to an HD version of the APOD, if the MediaType is image.
   /// Null if it is a video.
