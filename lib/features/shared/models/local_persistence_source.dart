@@ -31,12 +31,15 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
       _favoritesBox.keys.cast<String>().toList();
 
   @override
-  Future<T?> getItem(String id) async =>
-      fromJson(_itemsBox.get(id).cast<String, dynamic>());
+  Future<T?> getItem(String id) async {
+    final data = _itemsBox.get(id);
+    return data != null ? fromJson(data.cast<String, dynamic>()) : null;
+  }
 
   @override
-  Future<List<T>> getItems() async =>
-      _itemsBox.values.map<T>((data) => fromJson(data)).toList();
+  Future<List<T>> getItems() async => _itemsBox.values
+      .map<T>((data) => fromJson(data.cast<String, dynamic>()))
+      .toList();
 
   @override
   Future<void> setFavorite(String id, bool isFavorited) async =>

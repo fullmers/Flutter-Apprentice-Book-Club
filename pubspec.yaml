@@ -33,6 +33,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/apod_images/
-    - assets/json/
     - assets/images/

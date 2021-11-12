@@ -5,7 +5,7 @@ void main() {
   group('Apod deserialization should', () {
     test('honor video media type', () {
       final data = <String, dynamic>{
-        'id': 1,
+        'id': '1',
         'media_type': 'video',
         'url': 'some-url'
       };
@@ -18,7 +18,7 @@ void main() {
 
     test('honor image media type', () {
       final data = <String, dynamic>{
-        'id': 1,
+        'id': '1',
         'media_type': 'image',
         'url': 'some-url'
       };

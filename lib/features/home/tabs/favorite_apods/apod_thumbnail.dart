@@ -21,7 +21,7 @@ class ApodThumbnail extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(apod.displayImageUrl!),
+                    image: NetworkImage(apod.displayImageUrl!),
                     fit: BoxFit.cover,
                   ),
                 ),

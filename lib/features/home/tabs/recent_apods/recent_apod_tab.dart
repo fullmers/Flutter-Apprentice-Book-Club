@@ -1,9 +1,9 @@
-import 'package:apod/api/mock_apod_service.dart';
+import 'package:apod/features/home/home.dart';
+import 'package:provider/provider.dart';
+
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'recent_apods.dart';
 
 @immutable
 class RecentApodPage extends StatelessWidget {
@@ -11,10 +11,10 @@ class RecentApodPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mockService = MockApodService();
+    final manager = context.read<FavoritesManager>();
     return FutureBuilder(
-      future: mockService.getRecentApods(),
-      builder: (context, AsyncSnapshot<List<Apod>> snapshot) {
+      future: manager.getRecentApods(),
+      builder: (context, AsyncSnapshot<List<Apod>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           List<Apod>? apods = snapshot.data;
           return (apods != null)

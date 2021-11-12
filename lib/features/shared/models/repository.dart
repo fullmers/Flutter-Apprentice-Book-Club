@@ -72,6 +72,8 @@ class Repository<T extends DataModel> extends DataContract<T> {
     for (final source in sourceList) {
       items = await source.getItems();
 
+      print('getItems: $source :: $items');
+
       // Note which sources have no info.
       if (items.isEmpty) {
         emptySources.add(source);

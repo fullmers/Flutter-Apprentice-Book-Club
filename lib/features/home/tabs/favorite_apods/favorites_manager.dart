@@ -1,4 +1,5 @@
 import 'package:apod/features/shared/models/models.dart';
+import 'package:apod/features/shared/extensions.dart';
 import 'package:flutter/foundation.dart';
 
 class FavoritesManager extends ChangeNotifier {
@@ -12,6 +13,13 @@ class FavoritesManager extends ChangeNotifier {
     _repository.toggleFavorite(id);
     notifyListeners();
   }
+
+  Future<Apod?> getApod([DateTime? date]) {
+    date ??= DateTime.now().toUtc();
+    return _repository.getItem(date.dateString());
+  }
+
+  Future<List<Apod>?> getRecentApods() => _repository.getItems();
 
   Future<List<String>> get favoriteIds async => _repository.getFavoriteIds();
 

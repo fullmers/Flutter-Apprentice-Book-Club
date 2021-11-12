@@ -71,7 +71,7 @@ class ApodCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(apod.displayImageUrl!),
+          image: NetworkImage(apod.displayImageUrl!),
           fit: BoxFit.cover,
         ),
         borderRadius: const BorderRadius.all(
@@ -92,7 +92,7 @@ class ApodCard extends StatelessWidget {
       decoration: apod.displayImageUrl != null
           ? BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(apod.displayImageUrl!),
+                image: NetworkImage(apod.displayImageUrl!),
                 fit: BoxFit.cover,
               ),
               borderRadius: const BorderRadius.all(

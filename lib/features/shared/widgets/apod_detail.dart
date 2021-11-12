@@ -1,6 +1,8 @@
-import 'package:apod/api/mock_apod_service.dart';
+import 'package:apod/features/home/home.dart';
+import 'package:apod/features/shared/extensions.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class ApodDetail extends StatefulWidget {
@@ -34,9 +36,9 @@ class _ApodDetailState extends State<ApodDetail> {
 
     /// Never load data directly in a widget like this, but we'll improve
     /// our implementation once we tackle state management for real.
-    final service = MockApodService();
-    service
-        .getSingleApod(widget.id)
+    final manager = context.read<FavoritesManager>();
+    manager
+        .getApod(widget.id.toDateTimeAsDateString())
         .then((apod) => setState(() => this.apod = apod));
   }
 
@@ -104,14 +106,14 @@ class _ApodDetailState extends State<ApodDetail> {
         return InteractiveViewer(
           transformationController: _controller,
           child: Image(
-            image: AssetImage(apod!.displayImageUrl!),
+            image: NetworkImage(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
         );
       } else {
         return Stack(children: [
           Image(
-            image: AssetImage(apod!.displayImageUrl!),
+            image: NetworkImage(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
           const Center(
