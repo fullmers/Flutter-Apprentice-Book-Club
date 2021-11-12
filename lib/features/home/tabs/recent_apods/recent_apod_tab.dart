@@ -6,8 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'recent_apods.dart';
 
 @immutable
-class RecentApodPage extends StatelessWidget {
+class RecentApodPage extends StatefulWidget {
   const RecentApodPage({Key? key}) : super(key: key);
+
+  @override
+  State<RecentApodPage> createState() => _RecentApodPageState();
+}
+
+class _RecentApodPageState extends State<RecentApodPage> {
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +26,7 @@ class RecentApodPage extends StatelessWidget {
           List<Apod>? apods = snapshot.data;
           return (apods != null)
               ? ListView.builder(
+                  controller: _controller,
                   itemCount: apods.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
