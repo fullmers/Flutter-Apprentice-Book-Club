@@ -1,4 +1,6 @@
 // ignore_for_file: invalid_annotation_target
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'secrets.dart';
@@ -16,14 +18,21 @@ class ApodApi {
   ///
   /// Returns a raw [http.Response] object, which is currently awkward for any
   /// code that uses this class.
-  Future<http.Response> read({
+  Future<T?> read<T>({
     ApodRequestParameters params = const ApodRequestParameters(),
   }) async {
     final uri = Uri(
       host: baseUrl,
       queryParameters: params.toJson()..addAll({'api_key': apodApiKey}),
     );
-    return http.get(uri);
+    final resp = await http.get(uri);
+
+    // Convert "200 OK" responses into JSON.
+    if (resp.statusCode == 200) {
+      return resp.bodyBytes.isNotEmpty
+          ? jsonDecode(utf8.decoder.convert(resp.bodyBytes)) as T
+          : null;
+    }
   }
 }
 
