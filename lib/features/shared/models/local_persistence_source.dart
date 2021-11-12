@@ -21,6 +21,11 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
     _favoritesBox = await Hive.openBox('${T.runtimeType.toString()}-favorites');
   }
 
+  Future<void> clear() async {
+    _itemsBox.clear();
+    _favoritesBox.clear();
+  }
+
   @override
   Future<List<String>> getFavoriteIds() async =>
       _favoritesBox.keys.cast<String>().toList();
