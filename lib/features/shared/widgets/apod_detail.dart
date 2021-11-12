@@ -1,6 +1,7 @@
 import 'package:apod/features/home/home.dart';
 import 'package:apod/features/shared/extensions.dart';
 import 'package:apod/features/shared/models/apod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -106,14 +107,14 @@ class _ApodDetailState extends State<ApodDetail> {
         return InteractiveViewer(
           transformationController: _controller,
           child: Image(
-            image: NetworkImage(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
         );
       } else {
         return Stack(children: [
           Image(
-            image: NetworkImage(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
           const Center(

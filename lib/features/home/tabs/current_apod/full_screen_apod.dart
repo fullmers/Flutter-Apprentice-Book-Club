@@ -1,5 +1,6 @@
 import 'package:apod/apod_theme.dart';
 import 'package:apod/features/shared/models/apod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +15,7 @@ class FullScreenApod extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(apod.displayImageUrl!),
+              image: CachedNetworkImageProvider(apod.displayImageUrl!),
               fit: BoxFit.cover,
             ),
           ),

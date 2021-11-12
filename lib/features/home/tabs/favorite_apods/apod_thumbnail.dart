@@ -1,4 +1,5 @@
 import 'package:apod/features/shared/models/apod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ApodThumbnail extends StatelessWidget {
@@ -21,7 +22,7 @@ class ApodThumbnail extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(apod.displayImageUrl!),
+                    image: CachedNetworkImageProvider(apod.displayImageUrl!),
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:apod/features/home/tabs/favorite_apods/favorite_apods.dart';
 import 'package:apod/features/shared/models/apod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,7 @@ class ApodCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(apod.displayImageUrl!),
+          image: CachedNetworkImageProvider(apod.displayImageUrl!),
           fit: BoxFit.cover,
         ),
         borderRadius: const BorderRadius.all(
@@ -92,7 +93,7 @@ class ApodCard extends StatelessWidget {
       decoration: apod.displayImageUrl != null
           ? BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(apod.displayImageUrl!),
+                image: CachedNetworkImageProvider(apod.displayImageUrl!),
                 fit: BoxFit.cover,
               ),
               borderRadius: const BorderRadius.all(
