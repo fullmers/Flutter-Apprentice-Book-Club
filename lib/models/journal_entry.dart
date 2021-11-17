@@ -1,25 +1,18 @@
-class JournalEntry {
-  const JournalEntry({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.date,
-  });
-  final String id;
-  final String title;
-  final String body;
-  final DateTime date;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:apod/features/shared/models/models.dart';
 
-  JournalEntry copyWith({
-    String? id,
-    String? title,
-    String? body,
-    DateTime? date,
-  }) =>
-      JournalEntry(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        body: body ?? this.body,
-        date: date ?? this.date,
-      );
+part 'journal_entry.freezed.dart';
+part 'journal_entry.g.dart';
+
+@Freezed()
+class JournalEntry extends DataModel with _$JournalEntry {
+  const factory JournalEntry({
+    required String id,
+    required String title,
+    required String body,
+    required DateTime date,
+  }) = _JournalEntry;
+
+  factory JournalEntry.fromJson(Map<String, dynamic> json) =>
+      _$JournalEntryFromJson(json);
 }

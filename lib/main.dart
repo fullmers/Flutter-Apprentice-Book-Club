@@ -10,6 +10,7 @@ import 'features/shared/models/models.dart';
 import 'models/models.dart';
 
 late Repository<Apod> apodRepository;
+late Repository<JournalEntry> journalRepository;
 
 void main() async {
   // This is required if we want to access platform channels.
@@ -21,12 +22,16 @@ void main() async {
     fromJson: (Map<String, dynamic> data) => Apod.fromJson(data),
     toJson: (Apod obj) => obj.toJson(),
   );
+  final journalHive = LocalPersistenceSource<JournalEntry>(
+    fromJson: (Map<String, dynamic> data) => JournalEntry.fromJson(data),
+    toJson: (JournalEntry obj) => obj.toJson(),
+  );
   await apodHive.ready();
-  // await apodHive.clear();
+  await journalHive.ready();
 
   appStateManager.initializeApp();
 
-  // Create the fully Repository
+  // Create the full Apod Repository
   apodRepository = Repository<Apod>(
     sourceList: [
       LocalMemorySource<Apod>(),
@@ -35,6 +40,14 @@ void main() async {
         api: const ApodApi(),
         fromJson: (Map<String, dynamic> data) => Apod.fromJson(data),
       )
+    ],
+  );
+
+  // Create the full JournalEntry Repository
+  journalRepository = Repository<JournalEntry>(
+    sourceList: [
+      LocalMemorySource<JournalEntry>(),
+      journalHive,
     ],
   );
 
@@ -48,7 +61,9 @@ class ApodApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => JournalManager()),
+        ChangeNotifierProvider(
+          create: (context) => JournalManager(journalRepository),
+        ),
         ChangeNotifierProvider(
           create: (context) => FavoritesManager(apodRepository),
         ),

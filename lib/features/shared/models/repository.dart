@@ -129,4 +129,11 @@ class Repository<T extends DataModel> extends DataContract<T> {
       source.toggleFavorite(id);
     }
   }
+
+  @override
+  Future<void> deleteItem(T item) async {
+    for (final source in sourceList) {
+      source.deleteItem(item);
+    }
+  }
 }

@@ -48,7 +48,8 @@ class Routes {
 
       return AddJournalEntryPage.page(
         onSave: journalManager.setItem,
-        entry: journalManager.getItem(state.params['jid']!),
+        entry: journalManager.getItem(state.params['jid']!)
+            as Future<JournalEntry>?,
       );
     },
   );

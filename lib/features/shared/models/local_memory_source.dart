@@ -30,4 +30,8 @@ class LocalMemorySource<T extends DataModel> extends Source<T> {
   @override
   Future<void> toggleFavorite(String id) async =>
       setFavorite(id, !_favoritedIds.contains(id));
+
+  @override
+  Future<void> deleteItem(T item) async =>
+      _items.containsKey(item.id) ? _items.remove(item.id) : null;
 }

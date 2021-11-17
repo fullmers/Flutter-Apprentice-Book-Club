@@ -20,9 +20,12 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
   final Map<String, dynamic> Function(T) toJson;
 
   Future<void> ready() async {
-    _itemsBox = await Hive.openBox('${T.runtimeType.toString()}-items');
-    _favoritesBox = await Hive.openBox('${T.runtimeType.toString()}-favorites');
+    _itemsBox = await Hive.openBox(_itemsBoxName);
+    _favoritesBox = await Hive.openBox(_favoritesBoxName);
   }
+
+  String get _itemsBoxName => '${T.toString()}-items';
+  String get _favoritesBoxName => '${T.toString()}-favorites';
 
   Future<void> clear() async {
     _itemsBox.clear();
@@ -58,4 +61,10 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
   Future<void> toggleFavorite(String id) async => _favoritesBox.containsKey(id)
       ? _favoritesBox.delete(id)
       : _favoritesBox.put(id, true);
+
+  @override
+  Future<void> deleteItem(T item) async {
+    _itemsBox.delete(item.id);
+    _favoritesBox.delete(item.id);
+  }
 }

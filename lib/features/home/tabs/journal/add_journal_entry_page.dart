@@ -9,12 +9,12 @@ class AddJournalEntryPage extends StatefulWidget {
   const AddJournalEntryPage({required this.onSave, this.entry, Key? key})
       : super(key: key);
 
-  final JournalEntry? entry;
+  final Future<JournalEntry>? entry;
   final Function(JournalEntry) onSave;
 
   static Page page({
     required Function(JournalEntry) onSave,
-    JournalEntry? entry,
+    Future<JournalEntry>? entry,
     LocalKey? key,
   }) =>
       MaterialPage<void>(
@@ -34,13 +34,18 @@ class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
   final TextEditingController bodyController = TextEditingController();
   DateTime? date;
 
+  JournalEntry? originalEntry;
+
   @override
   void initState() {
     super.initState();
     if (widget.entry != null) {
-      titleController.text = widget.entry!.title;
-      bodyController.text = widget.entry!.body;
-      date = widget.entry!.date;
+      widget.entry!.then((_entry) {
+        originalEntry = _entry;
+        titleController.text = _entry.title;
+        bodyController.text = _entry.body;
+        date = _entry.date;
+      });
     }
   }
 
@@ -52,7 +57,7 @@ class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
 
   void saveEntry() {
     final entry = JournalEntry(
-      id: widget.entry?.id ?? const Uuid().v4(),
+      id: originalEntry?.id ?? const Uuid().v4(),
       title: titleController.text,
       body: bodyController.text,
       date: date ?? DateTime.now(),
@@ -65,7 +70,7 @@ class _AddJournalEntryPageState extends State<AddJournalEntryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.entry?.title ?? 'Add Journal Entry'),
+        title: Text(originalEntry?.title ?? 'Add Journal Entry'),
         actions: <Widget>[
           IconButton(icon: const Icon(Icons.check), onPressed: saveEntry),
         ],

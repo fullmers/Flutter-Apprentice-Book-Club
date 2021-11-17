@@ -62,4 +62,7 @@ class ApiSource<T extends DataModel> extends Source<T> {
 
   @override
   Future<void> toggleFavorite(String id) async {}
+
+  @override
+  Future<void> deleteItem(T item) async {}
 }

@@ -29,6 +29,8 @@ abstract class DataContract<T extends DataModel> {
 
   /// Flips the active user's "favorited" status of the given [id].
   Future<void> toggleFavorite(String id);
+
+  Future<void> deleteItem(T item);
 }
 
 /// Type of [DataContract] subclass that is responsible for yielding real data.

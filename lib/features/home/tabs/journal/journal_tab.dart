@@ -13,9 +13,23 @@ class JournalPage extends StatelessWidget {
     return Scaffold(
       body: Consumer<JournalManager>(
         builder: (context, manager, child) {
-          return manager.entries.isEmpty
-              ? const EmptyJournalView()
-              : const JournalListView();
+          return FutureBuilder<List<JournalEntry>>(
+            future: manager.entries,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<JournalEntry>> snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
+              }
+              if (snapshot.hasData) {
+                final List<JournalEntry> entries = snapshot.data!;
+                return entries.isEmpty
+                    ? const EmptyJournalView()
+                    : JournalListView(entries: entries);
+              }
+              return const EmptyJournalView();
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
