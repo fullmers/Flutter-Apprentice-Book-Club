@@ -27,6 +27,7 @@ void main() async {
     toJson: (JournalEntry obj) => obj.toJson(),
   );
   await apodHive.ready();
+  await apodHive.clear();
   await journalHive.ready();
 
   appStateManager.initializeApp();
@@ -37,7 +38,7 @@ void main() async {
       LocalMemorySource<Apod>(),
       apodHive,
       ApiSource<Apod>(
-        api: const ApodApi(),
+        api: ApodApi(),
         fromJson: (Map<String, dynamic> data) => Apod.fromJson(data),
       )
     ],

@@ -15,7 +15,7 @@ class CurrentApodPage extends StatelessWidget {
       builder: (context, AsyncSnapshot<Apod?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return (snapshot.data == null)
-              ? const Text('Something went wrong')
+              ? const Center(child: Text('Something went wrong'))
               : GestureDetector(
                   onTap: () {
                     context.go('/apod/${snapshot.data!.id}');

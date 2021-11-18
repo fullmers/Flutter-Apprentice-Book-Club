@@ -15,7 +15,7 @@ class FavoritesManager extends ChangeNotifier {
   }
 
   Future<Apod?> getApod([DateTime? date]) {
-    date ??= DateTime.now().toUtc();
+    date ??= DateTime.now();
     return _repository.getItem(date.dateString());
   }
 

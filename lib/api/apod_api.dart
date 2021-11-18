@@ -1,92 +1,43 @@
-// ignore_for_file: invalid_annotation_target
-import 'dart:convert';
-
-import 'package:apod/features/shared/extensions.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:http/http.dart' as http;
+import 'package:apod/api/result.dart';
+import 'package:apod/features/shared/models/models.dart';
+import 'package:chopper/chopper.dart';
+import 'apod_converter.dart';
 import 'secrets.dart';
 
-part 'apod_api.freezed.dart';
-part 'apod_api.g.dart';
+part 'apod_api.chopper.dart';
+
+const apiUrl = 'https://api.nasa.gov/planetary/apod';
 
 /// Entrypoint for making network requests to the real Apod API.
-class ApodApi {
-  const ApodApi();
+@ChopperApi()
+abstract class ApodApi extends ChopperService {
+  @Get()
+  Future<Response<Result<List<Apod>>>> list({
+    @Query('start_date') required DateTime startDate,
+    @Query('end_date') required DateTime endDate,
+  });
 
-  static const baseUrl = 'https://api.nasa.gov/planetary/apod';
+  @Get()
+  Future<Response<Result<Apod>>> detail({
+    @Query('date') required DateTime date,
+  });
 
-  Future<dynamic>? _request({
-    ApodRequestParameters params = const ApodRequestParameters(),
-  }) async {
-    final uri = Uri.parse(baseUrl).replace(
-      queryParameters: flattenParameters(params)
-        ..addAll({'api_key': apodApiKey}),
+  static Request _addQuery(Request req) {
+    final params = Map<String, dynamic>.from(req.parameters);
+    params['api_key'] = apodApiKey;
+    return req.copyWith(parameters: params);
+  }
+
+  static ApodApi create() {
+    final client = ChopperClient(
+      baseUrl: apiUrl,
+      interceptors: [_addQuery, HttpLoggingInterceptor()],
+      converter: ApodConverter(),
+      errorConverter: const JsonConverter(),
+      services: [
+        _$ApodApi(),
+      ],
     );
-    final resp = await http.get(uri);
-    // Convert "200 OK" responses into JSON.
-    if (resp.statusCode == 200) {
-      return resp.bodyBytes.isNotEmpty
-          ? jsonDecode(utf8.decoder.convert(resp.bodyBytes))
-          : null;
-    } else {
-      // ignore: avoid_print
-      print(resp.body);
-    }
+    return _$ApodApi(client);
   }
-
-  /// Sends a request to the Apod Api and returns a list of results.
-  Future<List<Map<String, dynamic>>?> list({
-    ApodRequestParameters params = const ApodRequestParameters(),
-  }) async {
-    final List<dynamic> resp = await _request(params: params);
-    return resp.cast<Map<String, dynamic>>();
-  }
-
-  /// Sends a request to the Apod Api and returns a single result.
-  Future<Map<String, dynamic>?> detail({
-    ApodRequestParameters params = const ApodRequestParameters(),
-  }) async {
-    final Map<dynamic, dynamic> resp = await _request(params: params);
-    return resp.cast<String, dynamic>();
-  }
-
-  Map<String, dynamic> flattenParameters(ApodRequestParameters params) =>
-      params.toJson()
-        ..removeWhere((key, value) => value == null || value == '');
-}
-
-/// Container for customization of [ApodApi] requests.
-@Freezed()
-class ApodRequestParameters with _$ApodRequestParameters {
-  const ApodRequestParameters._();
-
-  @JsonSerializable(explicitToJson: true)
-  const factory ApodRequestParameters({
-    /// Optional filter for the earliest date from which we desire results.
-    @OptionalDateTimeConverter()
-    @JsonKey(name: 'start_date')
-        DateTime? startDate,
-
-    /// Optional filter for the latest date from which we desire results.
-    @OptionalDateTimeConverter() @JsonKey(name: 'end_date') DateTime? endDate,
-
-    /// Optional filter for only date from which we desire results.
-    @OptionalDateTimeConverter() DateTime? date,
-
-    /// Optional limit to how many results should be returned.
-    int? count,
-  }) = _ApodRequestParameters;
-
-  factory ApodRequestParameters.fromJson(Map<String, dynamic> json) =>
-      _$ApodRequestParametersFromJson(json);
-}
-
-class OptionalDateTimeConverter extends JsonConverter<DateTime?, String> {
-  const OptionalDateTimeConverter();
-
-  @override
-  DateTime? fromJson(String json) => DateTime.parse(json);
-
-  @override
-  String toJson(DateTime? object) => object != null ? object.dateString() : '';
 }
