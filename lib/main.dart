@@ -27,7 +27,7 @@ void main() async {
     toJson: (JournalEntry obj) => obj.toJson(),
   );
   await apodHive.ready();
-  await apodHive.clear();
+  // await apodHive.clear();
   await journalHive.ready();
 
   appStateManager.initializeApp();
