@@ -38,7 +38,7 @@ void main() async {
       LocalMemorySource<Apod>(),
       apodHive,
       ApiSource<Apod>(
-        api: ApodApi(),
+        api: ApodApi.create(),
         fromJson: (Map<String, dynamic> data) => Apod.fromJson(data),
       )
     ],

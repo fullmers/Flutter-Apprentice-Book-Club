@@ -1,5 +1,7 @@
+import 'package:apod/api/result.dart';
 import 'package:apod/features/shared/extensions.dart';
 import 'package:apod/api/apod_api.dart';
+import 'package:chopper/chopper.dart';
 
 import 'models.dart';
 
@@ -17,41 +19,29 @@ class ApiSource<T extends DataModel> extends Source<T> {
 
   @override
   Future<T?> getItem(String id) async {
-    final params = ApodRequestParameters(date: id.toDateTimeAsDateString());
+    final Response<Result<Apod>> response = await api.detail(
+      date: id.toDateTimeAsDateString(),
+    );
 
-    final Map<String, dynamic>? data = await api.detail(params: params);
-
-    // The APOD Api has no concept of an Id - but that is essential to us.
-    // We've decided to use Dates as Ids, because they serve a similar role
-    // to the Apod Api. Thus, to keep our data models clean, we'll copy the
-    // value found under the "date" key into the "id" key.
-    if (data != null) {
-      data['id'] = data['date'];
+    if (response.body is Success) {
+      return ((response.body! as Success<Apod>).value as T);
+    } else {
+      // ignore: avoid_print
+      print(response.error);
     }
-
-    return data != null ? fromJson(data) : null;
   }
 
   @override
   Future<List<T>> getItems() async {
-    final params = ApodRequestParameters(
+    final Response<Result<List<Apod>>> response = await api.list(
       endDate: DateTime.now(),
       startDate: DateTime.now().subtract(const Duration(days: 15)),
     );
 
-    final List<Map<String, dynamic>>? data = await api.list(params: params);
-
-    // The APOD Api has no concept of an Id - but that is essential to us.
-    // We've decided to use Dates as Ids, because they serve a similar role
-    // to the Apod Api. Thus, to keep our data models clean, we'll copy the
-    // value found under the "date" key into the "id" key.
-    if (data != null) {
-      for (final _entry in data) {
-        _entry['id'] = _entry['date'];
-      }
+    if (response.body is Success) {
+      return ((response.body! as Success<List<Apod>>).value as List<T>);
     }
-
-    return data?.map<T>(fromJson).toList() ?? <T>[];
+    return <T>[];
   }
 
   @override
