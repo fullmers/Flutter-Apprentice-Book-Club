@@ -25,11 +25,6 @@ class _$ApodApi extends ApodApi {
       'end_date': endDate
     };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
-    // Works:
-    // return client.send<Result<List<Apod>>, Apod>(
-    //     ApodConverter().convertRequest($request));
-
-    // What is generated. Breaks:
     return client.send<Result<List<Apod>>, Apod>($request);
   }
 
@@ -38,11 +33,6 @@ class _$ApodApi extends ApodApi {
     final $url = '';
     final $params = <String, dynamic>{'date': date};
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
-    // Works:
-    // return client
-    //     .send<Result<Apod>, Apod>(ApodConverter().convertRequest($request));
-
-    // What is generated. Breaks:
     return client.send<Result<Apod>, Apod>($request);
   }
 }
