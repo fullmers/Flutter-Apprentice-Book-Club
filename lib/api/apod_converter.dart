@@ -1,32 +1,17 @@
 import 'dart:convert';
 import 'package:apod/features/shared/models/models.dart';
-import 'package:apod/features/shared/extensions.dart';
 import 'package:chopper/chopper.dart';
 import 'result.dart';
 
 class ApodConverter implements Converter {
   @override
   Request convertRequest(Request request) {
-    Map<String, dynamic> parameters = request.parameters;
-
-    if (parameters['date'] is DateTime) {
-      parameters['date'] = (parameters['date'] as DateTime).dateString();
-    }
-    if (parameters['start_date'] is DateTime) {
-      parameters['start_date'] =
-          (parameters['start_date'] as DateTime).dateString();
-    }
-    if (parameters['end_date'] is DateTime) {
-      parameters['end_date'] =
-          (parameters['end_date'] as DateTime).dateString();
-    }
-
     final req = applyHeader(
       request,
       contentTypeKey,
       jsonHeaders,
       override: false,
-    ).copyWith(parameters: parameters);
+    );
 
     return encodeJson(req);
   }
