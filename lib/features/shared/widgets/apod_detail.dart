@@ -1,5 +1,4 @@
-import 'package:apod/features/home/home.dart';
-import 'package:apod/features/shared/extensions.dart';
+import 'package:apod/features/shared/blocs/apod/apod.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -29,92 +28,107 @@ class ApodDetail extends StatefulWidget {
 class _ApodDetailState extends State<ApodDetail> {
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
-  Apod? apod;
+  late ApodBloc bloc;
 
   @override
   void initState() {
     super.initState();
-
-    /// Never load data directly in a widget like this, but we'll improve
-    /// our implementation once we tackle state management for real.
-    final manager = context.read<FavoritesManager>();
-    manager
-        .getApod(widget.id.toDateTimeAsDateString())
-        .then((apod) => setState(() => this.apod = apod));
+    bloc = context.read<ApodBloc>();
+    bloc.add(LoadSpecificApod(widget.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (apod == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator.adaptive()),
-      );
-    }
+    return StreamBuilder<ApodState>(
+      stream: bloc.stream,
+      builder: (BuildContext context, AsyncSnapshot<ApodState> snapshot) {
+        // Catch the initial moment before our we've done anything.
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: (Text(apod!.title)),
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              height: MediaQuery.of(context).size.height * 0.4,
-              width: MediaQuery.of(context).size.width,
-              child: _getImage(),
+        final Apod? apod = snapshot.data!.getApod(widget.id);
+
+        if (apod == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: (Text(apod.title)),
+          ),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Positioned(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  child: _ApodImage(apod: apod, controller: _controller),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.4,
+                  // 50 pixels is the size of the upper navbar. Subtracting
+                  // this prevents the last part of our test from being
+                  // unreachable below the bottom of the UI.
+                  height: MediaQuery.of(context).size.height * 0.6 - 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    children: [
+                      if (apod.mediaType == MediaType.image)
+                        Slider(
+                          min: 1.0,
+                          max: 4.0,
+                          divisions: 20,
+                          label: _sliderScalar.toStringAsPrecision(2),
+                          value: _sliderScalar.toDouble(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              _sliderScalar = newValue;
+                              _controller.value =
+                                  Matrix4.identity().scaled(_sliderScalar);
+                            });
+                          },
+                          activeColor: Colors.purple[200],
+                          inactiveColor: Colors.purple[800],
+                        ),
+                      _ApodBody(apod, scalar: _sliderScalar),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.4,
-              // 50 pixels is the size of the upper navbar. Subtracting
-              // this prevents the last part of our test from being
-              // unreachable below the bottom of the UI.
-              height: MediaQuery.of(context).size.height * 0.6 - 50,
-              width: MediaQuery.of(context).size.width,
-              child: ListView(
-                children: [
-                  if (apod!.mediaType == MediaType.image)
-                    Slider(
-                      min: 1.0,
-                      max: 4.0,
-                      divisions: 20,
-                      label: _sliderScalar.toStringAsPrecision(2),
-                      value: _sliderScalar.toDouble(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _sliderScalar = newValue;
-                          _controller.value =
-                              Matrix4.identity().scaled(_sliderScalar);
-                        });
-                      },
-                      activeColor: Colors.purple[200],
-                      inactiveColor: Colors.purple[800],
-                    ),
-                  _ApodBody(apod!, scalar: _sliderScalar),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
+}
 
-  /// show either an apod image, an apod video thumb with play button, or a gray
-  /// box with a play button (if no thumbnail was available)
-  Widget _getImage() {
-    if (apod!.displayImageUrl != null) {
-      if (apod!.mediaType == MediaType.image) {
+class _ApodImage extends StatelessWidget {
+  const _ApodImage({
+    Key? key,
+    required this.apod,
+    required TransformationController controller,
+  })  : _controller = controller,
+        super(key: key);
+  final Apod apod;
+  final TransformationController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    if (apod.displayImageUrl != null) {
+      if (apod.mediaType == MediaType.image) {
         return InteractiveViewer(
           transformationController: _controller,
           child: Image(
-            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
         );
       } else {
         return Stack(children: [
           Image(
-            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
           const Center(

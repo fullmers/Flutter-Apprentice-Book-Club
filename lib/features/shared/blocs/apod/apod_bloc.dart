@@ -10,7 +10,7 @@ class ApodBloc {
   ApodBloc(this._repository)
       : _stateController = StreamController<ApodState>.broadcast(),
         _eventsController = StreamController<ApodEvent>(),
-        state = const ApodState(todaysApod: null) {
+        state = ApodState.initial() {
     _eventsController.stream.listen(_processEvent);
   }
 
@@ -20,11 +20,19 @@ class ApodBloc {
   ApodState state;
 
   void _processEvent(ApodEvent event) async {
+    /// Handler for [LoadTodaysApod]
     if (event is LoadTodaysApod) {
       final todaysApod = await _repository.getItem(DateTime.now().dateString());
       state = state.copyWith(todaysApod: todaysApod);
-      _stateController.sink.add(state);
+
+      /// Handler for [LoadSpecificApod]
+    } else if (event is LoadSpecificApod) {
+      final specificApod = await _repository.getItem(event.id);
+      if (specificApod != null) {
+        state = state.copyWith(apods: state.apods..add(specificApod));
+      }
     }
+    _stateController.sink.add(state);
   }
 
   Stream<ApodState> get stream => _stateController.stream;
