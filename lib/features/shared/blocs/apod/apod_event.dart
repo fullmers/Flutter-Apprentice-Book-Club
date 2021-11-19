@@ -8,3 +8,7 @@ class LoadSpecificApod extends ApodEvent {
   const LoadSpecificApod(this.id);
   final String id;
 }
+
+class LoadRecentApods extends ApodEvent {
+  const LoadRecentApods();
+}

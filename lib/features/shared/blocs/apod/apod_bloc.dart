@@ -29,9 +29,25 @@ class ApodBloc {
     } else if (event is LoadSpecificApod) {
       final specificApod = await _repository.getItem(event.id);
       if (specificApod != null) {
-        state = state.copyWith(apods: state.apods..add(specificApod));
+        state = state.copyWith(
+            apods: state.apods
+              ..add(specificApod)
+              ..sort((a, b) => b.id.compareTo(a.id)));
       }
+
+      /// Handler for [LoadRecentApods]
+    } else if (event is LoadRecentApods) {
+      List<Apod> apods = await _repository.getItems();
+      if (apods.length < 15) {
+        apods = await _repository.getItems(type: RequestType.remote);
+      }
+
+      state = state.copyWith(
+          apods: state.apods
+            ..addAll(apods)
+            ..sort((a, b) => b.id.compareTo(a.id)));
     }
+
     _stateController.sink.add(state);
   }
 

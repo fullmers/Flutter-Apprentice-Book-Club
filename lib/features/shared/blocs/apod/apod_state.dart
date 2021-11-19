@@ -2,9 +2,9 @@ import 'package:apod/features/shared/models/models.dart';
 
 class ApodState {
   ApodState({
+    required List<Apod> apods,
     required this.todaysApod,
-    required this.apods,
-  }) {
+  }) : _apods = apods.toSet() {
     if (todaysApod != null && !apods.contains(todaysApod)) {
       apods.add(todaysApod!);
     }
@@ -16,8 +16,11 @@ class ApodState {
       );
 
   final Apod? todaysApod;
-  final List<Apod> apods;
+  final Set<Apod> _apods;
+  List<Apod>? _apodsList;
   Map<String, Apod>? _apodsMap;
+
+  List<Apod> get apods => _apodsList ??= _apods.toList();
 
   Apod? getApod(String id) {
     if (_apodsMap == null) {
@@ -28,7 +31,7 @@ class ApodState {
 
   void _prepareApodsMap() {
     _apodsMap = <String, Apod>{};
-    for (final _apod in apods) {
+    for (final _apod in _apods) {
       _apodsMap![_apod.id] = _apod;
     }
   }
@@ -39,6 +42,6 @@ class ApodState {
   }) =>
       ApodState(
         todaysApod: todaysApod ?? this.todaysApod,
-        apods: apods ?? this.apods,
+        apods: apods ?? _apods.toList(),
       );
 }
