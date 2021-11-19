@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:apod/api/apod_api.dart';
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
