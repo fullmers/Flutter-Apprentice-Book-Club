@@ -1,5 +1,5 @@
 import 'package:apod/features/home/home.dart';
-import 'package:apod/features/shared/models/apod.dart';
+import 'package:apod/features/shared/blocs/apod/apod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -9,26 +9,30 @@ class CurrentApodPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final manager = context.read<FavoritesManager>();
-    return FutureBuilder<Apod?>(
-      future: manager.getApod(),
-      builder: (context, AsyncSnapshot<Apod?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return (snapshot.data == null)
-              ? const Center(child: Text('Something went wrong'))
-              : GestureDetector(
-                  onTap: () {
-                    context.go('/apod/${snapshot.data!.id}');
-                  },
-                  child: Center(
-                    child: FullScreenApod(snapshot.data!),
-                  ),
-                );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+    final bloc = context.read<ApodBloc>();
+    return StreamBuilder<ApodState>(
+      stream: bloc.stream,
+      builder: (BuildContext context, AsyncSnapshot<ApodState> snapshot) {
+        // Catch the initial moment before our we've done anything.
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator.adaptive());
         }
+
+        // Now pull out the state.
+        final ApodState state = snapshot.data!;
+        if (state.todaysApod == null) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+
+        // Finally, return the actual UI.
+        return GestureDetector(
+          onTap: () {
+            context.go('/apod/${state.todaysApod!.id}');
+          },
+          child: Center(
+            child: FullScreenApod(state.todaysApod!),
+          ),
+        );
       },
     );
   }

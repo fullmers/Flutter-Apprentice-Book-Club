@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:apod/api/apod_api.dart';
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'apod_theme.dart';
 import 'features/home/home.dart';
+import 'features/shared/blocs/apod/apod.dart';
 import 'features/shared/models/models.dart';
 import 'models/models.dart';
 
@@ -70,6 +69,7 @@ class ApodApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FavoritesManager(apodRepository),
         ),
+        Provider<ApodBloc>.value(value: ApodBloc(apodRepository)),
         ChangeNotifierProvider.value(value: appStateManager),
       ],
       child: MaterialApp.router(
