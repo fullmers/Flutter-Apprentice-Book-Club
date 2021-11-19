@@ -6,4 +6,11 @@ class ApodState {
   });
 
   final Apod? todaysApod;
+
+  ApodState copyWith({
+    Apod? todaysApod,
+  }) =>
+      ApodState(
+        todaysApod: todaysApod ?? this.todaysApod,
+      );
 }

@@ -4,12 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class CurrentApodPage extends StatelessWidget {
+class CurrentApodPage extends StatefulWidget {
   const CurrentApodPage({Key? key}) : super(key: key);
 
   @override
+  State<CurrentApodPage> createState() => _CurrentApodPageState();
+}
+
+class _CurrentApodPageState extends State<CurrentApodPage> {
+  late ApodBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = context.read<ApodBloc>();
+    bloc.add(LoadTodaysApod());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = context.read<ApodBloc>();
     return StreamBuilder<ApodState>(
       stream: bloc.stream,
       builder: (BuildContext context, AsyncSnapshot<ApodState> snapshot) {
