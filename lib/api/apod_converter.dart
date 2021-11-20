@@ -35,7 +35,6 @@ class ApodConverter implements Converter {
 
       if (rawResponse is Map) {
         // Called `detail(...)`
-        rawResponse['id'] = rawResponse['date'];
         return response.copyWith<BodyType>(
           body: Success(
             Apod.fromJson(
@@ -52,7 +51,8 @@ class ApodConverter implements Converter {
           body: Success(rawResponse
               .map<Apod>(
                 (json) => Apod.fromJson(
-                    {...json, 'id': json['date']}.cast<String, dynamic>()),
+                  {...json, 'id': json['date']}.cast<String, dynamic>(),
+                ),
               )
               .toList()) as BodyType,
         );
