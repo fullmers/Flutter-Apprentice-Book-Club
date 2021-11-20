@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ApodStateTearOff {
   const _$ApodStateTearOff();
 
-  _ApodState call({Set<Apod> apods = const <Apod>{}, Apod? primaryApod}) {
+  _ApodState call({List<Apod> apods = const <Apod>[], Apod? primaryApod}) {
     return _ApodState(
       apods: apods,
       primaryApod: primaryApod,
@@ -30,7 +30,7 @@ const $ApodState = _$ApodStateTearOff();
 
 /// @nodoc
 mixin _$ApodState {
-  Set<Apod> get apods => throw _privateConstructorUsedError;
+  List<Apod> get apods => throw _privateConstructorUsedError;
   Apod? get primaryApod => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -42,7 +42,7 @@ mixin _$ApodState {
 abstract class $ApodStateCopyWith<$Res> {
   factory $ApodStateCopyWith(ApodState value, $Res Function(ApodState) then) =
       _$ApodStateCopyWithImpl<$Res>;
-  $Res call({Set<Apod> apods, Apod? primaryApod});
+  $Res call({List<Apod> apods, Apod? primaryApod});
 
   $ApodCopyWith<$Res>? get primaryApod;
 }
@@ -64,7 +64,7 @@ class _$ApodStateCopyWithImpl<$Res> implements $ApodStateCopyWith<$Res> {
       apods: apods == freezed
           ? _value.apods
           : apods // ignore: cast_nullable_to_non_nullable
-              as Set<Apod>,
+              as List<Apod>,
       primaryApod: primaryApod == freezed
           ? _value.primaryApod
           : primaryApod // ignore: cast_nullable_to_non_nullable
@@ -90,7 +90,7 @@ abstract class _$ApodStateCopyWith<$Res> implements $ApodStateCopyWith<$Res> {
           _ApodState value, $Res Function(_ApodState) then) =
       __$ApodStateCopyWithImpl<$Res>;
   @override
-  $Res call({Set<Apod> apods, Apod? primaryApod});
+  $Res call({List<Apod> apods, Apod? primaryApod});
 
   @override
   $ApodCopyWith<$Res>? get primaryApod;
@@ -114,7 +114,7 @@ class __$ApodStateCopyWithImpl<$Res> extends _$ApodStateCopyWithImpl<$Res>
       apods: apods == freezed
           ? _value.apods
           : apods // ignore: cast_nullable_to_non_nullable
-              as Set<Apod>,
+              as List<Apod>,
       primaryApod: primaryApod == freezed
           ? _value.primaryApod
           : primaryApod // ignore: cast_nullable_to_non_nullable
@@ -126,11 +126,11 @@ class __$ApodStateCopyWithImpl<$Res> extends _$ApodStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ApodState implements _ApodState {
-  const _$_ApodState({this.apods = const <Apod>{}, this.primaryApod});
+  const _$_ApodState({this.apods = const <Apod>[], this.primaryApod});
 
-  @JsonKey(defaultValue: const <Apod>{})
+  @JsonKey(defaultValue: const <Apod>[])
   @override
-  final Set<Apod> apods;
+  final List<Apod> apods;
   @override
   final Apod? primaryApod;
 
@@ -160,10 +160,11 @@ class _$_ApodState implements _ApodState {
 }
 
 abstract class _ApodState implements ApodState {
-  const factory _ApodState({Set<Apod> apods, Apod? primaryApod}) = _$_ApodState;
+  const factory _ApodState({List<Apod> apods, Apod? primaryApod}) =
+      _$_ApodState;
 
   @override
-  Set<Apod> get apods;
+  List<Apod> get apods;
   @override
   Apod? get primaryApod;
   @override

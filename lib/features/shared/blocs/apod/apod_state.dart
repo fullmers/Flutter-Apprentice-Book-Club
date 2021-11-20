@@ -6,7 +6,7 @@ part 'apod_state.freezed.dart';
 @Freezed()
 class ApodState with _$ApodState {
   const factory ApodState({
-    @Default(<Apod>{}) Set<Apod> apods,
+    @Default(<Apod>[]) List<Apod> apods,
     Apod? primaryApod,
   }) = _ApodState;
 
