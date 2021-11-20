@@ -1,14 +1,10 @@
-abstract class ApodEvent {
-  const ApodEvent();
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoadTodaysApod extends ApodEvent {}
+part 'apod_event.freezed.dart';
 
-class LoadSpecificApod extends ApodEvent {
-  const LoadSpecificApod(this.id);
-  final String id;
-}
-
-class LoadRecentApods extends ApodEvent {
-  const LoadRecentApods();
+@Freezed()
+class ApodEvent with _$ApodEvent {
+  const factory ApodEvent.loadTodaysApod() = LoadTodaysApod;
+  const factory ApodEvent.loadSpecificApod(String id) = LoadSpecificApod;
+  const factory ApodEvent.loadRecentApods() = LoadRecentApods;
 }
