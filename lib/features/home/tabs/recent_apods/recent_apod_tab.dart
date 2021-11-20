@@ -1,6 +1,6 @@
 import 'package:apod/features/home/home.dart';
 import 'package:apod/features/shared/blocs/apod/apod.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,43 +15,37 @@ class RecentApodPage extends StatefulWidget {
 
 class _RecentApodPageState extends State<RecentApodPage> {
   final ScrollController _controller = ScrollController();
-  late ApodBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = context.read<ApodBloc>();
-    bloc.add(const LoadRecentApods());
+    context.read<ApodBloc>().add(const LoadRecentApods());
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: bloc.stream,
-      builder: (context, AsyncSnapshot<ApodState> snapshot) {
-        // Catch the initial moment before our we've done anything.
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator.adaptive());
-        }
-
-        // Now pull out the state.
-        final ApodState state = snapshot.data!;
+    return BlocBuilder<ApodBloc, ApodState>(
+      // Optional, but `flutter_bloc` can figure it out.
+      // bloc: context.read<ApodBloc>(),
+      builder: (BuildContext context, ApodState state) {
         if (state.apods.isEmpty) {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
 
+        final apods = state.apods..sort((a, b) => b.id.compareTo(a.id));
+
         // Finally, return the actual UI.
         return ListView.builder(
           controller: _controller,
-          itemCount: state.apods.length,
+          itemCount: apods.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () {
-                context.go('/apod/${state.apods[index].id}');
+                context.go('/apod/${apods[index].id}');
               },
               child: Padding(
                 padding: EdgeInsets.only(top: index == 0 ? 12 : 0, bottom: 12),
-                child: ApodCard(state.apods[index]),
+                child: ApodCard(apods[index]),
               ),
             );
           },

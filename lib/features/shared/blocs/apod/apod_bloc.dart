@@ -36,7 +36,10 @@ class ApodBloc extends Bloc<ApodEvent, ApodState> {
       emit(
         state.copyWith(
           primaryApod: specificApod,
-          apods: state.apods..add(specificApod),
+          apods: <Apod>[
+            ...state.apods,
+            specificApod,
+          ],
         ),
       );
     }
@@ -51,7 +54,10 @@ class ApodBloc extends Bloc<ApodEvent, ApodState> {
       apods = await _repository.getItems(type: RequestType.remote);
     }
     emit(
-      state.copyWith(apods: state.apods..addAll(apods)),
+      state.copyWith(apods: <Apod>[
+        ...state.apods,
+        ...apods,
+      ]),
     );
   }
 }

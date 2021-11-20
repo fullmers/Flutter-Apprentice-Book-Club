@@ -1,6 +1,7 @@
 import 'package:apod/api/apod_api.dart';
 import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +70,7 @@ class ApodApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FavoritesManager(apodRepository),
         ),
-        Provider<ApodBloc>.value(value: ApodBloc(apodRepository)),
+        BlocProvider<ApodBloc>.value(value: ApodBloc(apodRepository)),
         ChangeNotifierProvider.value(value: appStateManager),
       ],
       child: MaterialApp.router(

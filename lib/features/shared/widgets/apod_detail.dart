@@ -2,7 +2,7 @@ import 'package:apod/features/shared/blocs/apod/apod.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class ApodDetail extends StatefulWidget {
@@ -28,30 +28,23 @@ class ApodDetail extends StatefulWidget {
 class _ApodDetailState extends State<ApodDetail> {
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
-  late ApodBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = context.read<ApodBloc>();
-    bloc.add(LoadSpecificApod(widget.id));
+    context.read<ApodBloc>().add(LoadSpecificApod(widget.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ApodState>(
-      stream: bloc.stream,
-      builder: (BuildContext context, AsyncSnapshot<ApodState> snapshot) {
-        // Catch the initial moment before our we've done anything.
-        if (!snapshot.hasData) {
+    return BlocBuilder<ApodBloc, ApodState>(
+      // Optional, but `flutter_bloc` can figure it out.
+      // bloc: context.read<ApodBloc>(),
+      builder: (BuildContext context, ApodState state) {
+        if (state.primaryApod == null) {
           return const Center(child: CircularProgressIndicator());
         }
-
-        final Apod? apod = snapshot.data!.getApod(widget.id);
-
-        if (apod == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
+        final Apod apod = state.primaryApod!;
 
         return Scaffold(
           appBar: AppBar(
