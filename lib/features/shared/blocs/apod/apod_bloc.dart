@@ -2,55 +2,56 @@ import 'dart:async';
 
 import 'package:apod/features/shared/extensions.dart';
 import 'package:apod/features/shared/models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'apod_state.dart';
 import 'apod_event.dart';
 
-class ApodBloc {
-  ApodBloc(this._repository)
-      : _stateController = StreamController<ApodState>.broadcast(),
-        _eventsController = StreamController<ApodEvent>(),
-        state = ApodState.initial() {
-    _eventsController.stream.listen(_processEvent);
+class ApodBloc extends Bloc<ApodEvent, ApodState> {
+  ApodBloc(this._repository) : super(ApodState.initial()) {
+    on<ApodEvent>(
+      (ApodEvent event, Emitter<ApodState> emit) => event.map(
+        loadTodaysApod: (event) => _loadTodaysApod(event, emit),
+        loadSpecificApod: (event) => _loadSpecificApod(event, emit),
+        loadRecentApods: (event) => _loadRecentApods(event, emit),
+      ),
+    );
   }
-
   final Repository<Apod> _repository;
-  final StreamController<ApodState> _stateController;
-  final StreamController<ApodEvent> _eventsController;
-  ApodState state;
 
-  void _processEvent(ApodEvent event) async {
-    /// Handler for [LoadTodaysApod]
-    if (event is LoadTodaysApod) {
-      final todaysApod = await _repository.getItem(DateTime.now().dateString());
-      state = state.copyWith(todaysApod: todaysApod);
-
-      /// Handler for [LoadSpecificApod]
-    } else if (event is LoadSpecificApod) {
-      final specificApod = await _repository.getItem(event.id);
-      if (specificApod != null) {
-        state = state.copyWith(
-            apods: state.apods
-              ..add(specificApod)
-              ..sort((a, b) => b.id.compareTo(a.id)));
-      }
-
-      /// Handler for [LoadRecentApods]
-    } else if (event is LoadRecentApods) {
-      List<Apod> apods = await _repository.getItems();
-      if (apods.length < 15) {
-        apods = await _repository.getItems(type: RequestType.remote);
-      }
-
-      state = state.copyWith(
-          apods: state.apods
-            ..addAll(apods)
-            ..sort((a, b) => b.id.compareTo(a.id)));
-    }
-
-    _stateController.sink.add(state);
+  Future<void> _loadTodaysApod(
+    LoadTodaysApod event,
+    Emitter<ApodState> emit,
+  ) async {
+    final todaysApod = await _repository.getItem(DateTime.now().dateString());
+    emit(state.copyWith(primaryApod: todaysApod));
   }
 
-  Stream<ApodState> get stream => _stateController.stream;
-  void add(ApodEvent event) => _eventsController.sink.add(event);
+  Future<void> _loadSpecificApod(
+    LoadSpecificApod event,
+    Emitter<ApodState> emit,
+  ) async {
+    final specificApod = await _repository.getItem(event.id);
+    if (specificApod != null) {
+      emit(
+        state.copyWith(
+          primaryApod: specificApod,
+          apods: state.apods..add(specificApod),
+        ),
+      );
+    }
+  }
+
+  Future<void> _loadRecentApods(
+    LoadRecentApods event,
+    Emitter<ApodState> emit,
+  ) async {
+    List<Apod> apods = await _repository.getItems();
+    if (apods.length < 15) {
+      apods = await _repository.getItems(type: RequestType.remote);
+    }
+    emit(
+      state.copyWith(apods: state.apods..addAll(apods)),
+    );
+  }
 }
