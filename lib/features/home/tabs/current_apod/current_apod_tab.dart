@@ -1,35 +1,40 @@
+import 'package:apod/bootstrap.dart';
 import 'package:apod/features/home/home.dart';
-import 'package:apod/features/shared/models/apod.dart';
+import 'package:apod/features/shared/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-class CurrentApodPage extends StatelessWidget {
+class CurrentApodPage extends ConsumerStatefulWidget {
   const CurrentApodPage({Key? key}) : super(key: key);
 
   @override
+  ConsumerState createState() => _CurrentApodPageState();
+}
+
+class _CurrentApodPageState extends ConsumerState<CurrentApodPage> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(apodManagerProvider.notifier).getApod();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final manager = context.read<FavoritesManager>();
-    return FutureBuilder<Apod?>(
-      future: manager.getApod(),
-      builder: (context, AsyncSnapshot<Apod?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return (snapshot.data == null)
-              ? const Center(child: Text('Something went wrong'))
-              : GestureDetector(
-                  onTap: () {
-                    context.go('/apod/${snapshot.data!.id}');
-                  },
-                  child: Center(
-                    child: FullScreenApod(snapshot.data!),
-                  ),
-                );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    final ApodState state = ref.watch(apodManagerProvider);
+    if (state.primaryApod == null) {
+      return const Center(child: CircularProgressIndicator.adaptive());
+    }
+
+    final apod = state.primaryApod!;
+
+    return GestureDetector(
+      onTap: () {
+        context.go('/apod/${apod.id}');
       },
+      child: Center(
+        child: FullScreenApod(apod),
+      ),
     );
   }
 }

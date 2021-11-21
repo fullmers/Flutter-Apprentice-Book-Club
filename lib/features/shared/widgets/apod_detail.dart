@@ -1,12 +1,12 @@
-import 'package:apod/features/home/home.dart';
+import 'package:apod/bootstrap.dart';
 import 'package:apod/features/shared/extensions.dart';
 import 'package:apod/features/shared/models/apod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class ApodDetail extends StatefulWidget {
+class ApodDetail extends ConsumerStatefulWidget {
   final String id;
 
   const ApodDetail({Key? key, required this.id}) : super(key: key);
@@ -26,34 +26,30 @@ class ApodDetail extends StatefulWidget {
   }
 }
 
-class _ApodDetailState extends State<ApodDetail> {
+class _ApodDetailState extends ConsumerState<ApodDetail> {
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
-  Apod? apod;
 
   @override
   void initState() {
     super.initState();
-
-    /// Never load data directly in a widget like this, but we'll improve
-    /// our implementation once we tackle state management for real.
-    final manager = context.read<FavoritesManager>();
-    manager
-        .getApod(widget.id.toDateTimeAsDateString())
-        .then((apod) => setState(() => this.apod = apod));
+    ref
+        .read(apodManagerProvider.notifier)
+        .getApod(widget.id.toDateTimeAsDateString());
   }
 
   @override
   Widget build(BuildContext context) {
-    if (apod == null) {
+    final state = ref.watch(apodManagerProvider);
+    if (state.primaryApod == null || state.primaryApod!.id != widget.id) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator.adaptive()),
       );
     }
-
+    final apod = state.primaryApod!;
     return Scaffold(
       appBar: AppBar(
-        title: (Text(apod!.title)),
+        title: (Text(apod.title)),
       ),
       body: SafeArea(
         child: Stack(
@@ -61,7 +57,7 @@ class _ApodDetailState extends State<ApodDetail> {
             Positioned(
               height: MediaQuery.of(context).size.height * 0.4,
               width: MediaQuery.of(context).size.width,
-              child: _getImage(),
+              child: _getImage(apod),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.4,
@@ -72,7 +68,7 @@ class _ApodDetailState extends State<ApodDetail> {
               width: MediaQuery.of(context).size.width,
               child: ListView(
                 children: [
-                  if (apod!.mediaType == MediaType.image)
+                  if (apod.mediaType == MediaType.image)
                     Slider(
                       min: 1.0,
                       max: 4.0,
@@ -89,7 +85,7 @@ class _ApodDetailState extends State<ApodDetail> {
                       activeColor: Colors.purple[200],
                       inactiveColor: Colors.purple[800],
                     ),
-                  _ApodBody(apod!, scalar: _sliderScalar),
+                  _ApodBody(apod, scalar: _sliderScalar),
                 ],
               ),
             ),
@@ -101,20 +97,20 @@ class _ApodDetailState extends State<ApodDetail> {
 
   /// show either an apod image, an apod video thumb with play button, or a gray
   /// box with a play button (if no thumbnail was available)
-  Widget _getImage() {
-    if (apod!.displayImageUrl != null) {
-      if (apod!.mediaType == MediaType.image) {
+  Widget _getImage(Apod apod) {
+    if (apod.displayImageUrl != null) {
+      if (apod.mediaType == MediaType.image) {
         return InteractiveViewer(
           transformationController: _controller,
           child: Image(
-            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
         );
       } else {
         return Stack(children: [
           Image(
-            image: CachedNetworkImageProvider(apod!.displayImageUrl!),
+            image: CachedNetworkImageProvider(apod.displayImageUrl!),
             fit: BoxFit.fitWidth,
           ),
           const Center(

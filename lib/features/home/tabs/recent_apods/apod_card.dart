@@ -1,8 +1,9 @@
-import 'package:apod/features/home/tabs/favorite_apods/favorite_apods.dart';
+import 'package:apod/bootstrap.dart';
 import 'package:apod/features/shared/models/apod.dart';
+import 'package:apod/features/shared/models/models.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'apod_card_bottom.dart';
 import 'apod_card_top.dart';
@@ -13,7 +14,7 @@ const cardRadius = 10.0;
 const cardPadding = 16.0;
 
 @immutable
-class ApodCard extends StatelessWidget {
+class ApodCard extends ConsumerWidget {
   const ApodCard(
     this.apod, {
     Key? key,
@@ -22,7 +23,7 @@ class ApodCard extends StatelessWidget {
   final Apod apod;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Stack(
         children: [
@@ -42,19 +43,16 @@ class ApodCard extends StatelessWidget {
             left: 10,
             child: GestureDetector(
               onTap: () {
-                context.read<FavoritesManager>().toggleFavorite(apod.id);
+                ref.read(apodManagerProvider.notifier).toggleFavorite(apod.id);
               },
-              child: Consumer<FavoritesManager>(
-                builder: (context, favoritesManager, child) {
-                  return FutureBuilder<bool>(
-                    future: favoritesManager.isFavorited(apod.id),
-                    builder: (context, AsyncSnapshot<bool> snapshot) {
-                      final isSelected =
-                          !snapshot.hasData ? false : snapshot.data!;
-                      final color = isSelected ? Colors.red[900] : Colors.white;
-                      return Icon(Icons.favorite, color: color);
-                    },
-                  );
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final state = ref.watch(apodManagerProvider);
+                  final isSelected = state.favoriteApods.contains(apod);
+                  final color = isSelected ? Colors.red[900] : Colors.white;
+                  final icon =
+                      isSelected ? Icons.favorite : Icons.favorite_border;
+                  return Icon(icon, color: color);
                 },
               ),
             ),

@@ -1,3 +1,5 @@
+export 'apod_manager.dart';
+export 'apod_state.dart';
 export 'api_source.dart';
 export 'apod.dart';
 export 'data_contract.dart';
