@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "691231305677",
+    "project_id": "flutter-apprentice-apod",
+    "storage_bucket": "flutter-apprentice-apod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691231305677:android:d670b1cbf28e0ae9989e84",
+        "android_client_info": {
+          "package_name": "com.google.apod"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBElLUpOHOw7jfGmyQIPIgP8vwyQN-h5jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
