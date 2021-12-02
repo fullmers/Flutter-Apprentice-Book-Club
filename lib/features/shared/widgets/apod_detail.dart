@@ -1,7 +1,9 @@
 import 'package:apod/bootstrap.dart';
 import 'package:apod/features/shared/extensions.dart';
-import 'package:apod/features/shared/models/apod.dart';
+import 'package:apod/features/shared/models/models.dart';
+import 'package:apod/features/shared/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:container_tab_indicator/container_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,18 +23,24 @@ class ApodDetail extends ConsumerStatefulWidget {
       );
 
   @override
-  _ApodDetailState createState() {
-    return _ApodDetailState();
-  }
+  _ApodDetailState createState() => _ApodDetailState();
 }
 
-class _ApodDetailState extends ConsumerState<ApodDetail> {
+class _ApodDetailState extends ConsumerState<ApodDetail>
+    with SingleTickerProviderStateMixin {
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+    )..addListener(() {
+        setState(() {});
+      });
     ref
         .read(apodManagerProvider.notifier)
         .getApod(widget.id.toDateTimeAsDateString());
@@ -64,34 +72,64 @@ class _ApodDetailState extends ConsumerState<ApodDetail> {
               // 50 pixels is the size of the upper navbar. Subtracting
               // this prevents the last part of our test from being
               // unreachable below the bottom of the UI.
-              height: MediaQuery.of(context).size.height * 0.6 - 50,
+              height: MediaQuery.of(context).size.height * 0.1,
               width: MediaQuery.of(context).size.width,
-              child: ListView(
-                children: [
-                  if (apod.mediaType == MediaType.image)
-                    Slider(
-                      min: 1.0,
-                      max: 4.0,
-                      divisions: 20,
-                      label: _sliderScalar.toStringAsPrecision(2),
-                      value: _sliderScalar.toDouble(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _sliderScalar = newValue;
-                          _controller.value =
-                              Matrix4.identity().scaled(_sliderScalar);
-                        });
-                      },
-                      activeColor: Colors.purple[200],
-                      inactiveColor: Colors.purple[800],
-                    ),
-                  _ApodBody(apod, scalar: _sliderScalar),
+              child: TabBar(
+                controller: _tabController,
+                tabs: <Widget>[
+                  Text(
+                    'Info',
+                    style: TextStyle(
+                        color: _tabController.index == 0
+                            ? Colors.white
+                            : Colors.black),
+                  ),
+                  Text(
+                    'Comments',
+                    style: TextStyle(
+                        color: _tabController.index == 1
+                            ? Colors.white
+                            : Colors.black),
+                  ),
                 ],
+                indicator: ContainerTabIndicator(
+                  widthFraction: 0.5,
+                  heightFraction: 0.4,
+                  radius: BorderRadius.circular(8.0),
+                  color: Colors.purple,
+                  borderColor: Colors.black,
+                ),
               ),
             ),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.5,
+              height: MediaQuery.of(context).size.height * 0.5 - 50,
+              width: MediaQuery.of(context).size.width,
+              child: _tabController.index == 0
+                  ? _getInfo(apod)
+                  : const _ApodComments(),
+            )
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getInfo(Apod apod) {
+    return ListView(
+      children: [
+        _ApodSlider(
+          sliderScalar: _sliderScalar,
+          apod: apod,
+          onChanged: (newValue) {
+            setState(() {
+              _sliderScalar = newValue;
+              _controller.value = Matrix4.identity().scaled(_sliderScalar);
+            });
+          },
+        ),
+        _ApodBody(apod, scalar: _sliderScalar),
+      ],
     );
   }
 
@@ -132,6 +170,60 @@ class _ApodDetailState extends ConsumerState<ApodDetail> {
         ),
       );
     }
+  }
+}
+
+class _ApodComments extends StatelessWidget {
+  const _ApodComments({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: ListView(
+        children: <Widget>[
+          /// Obviously fake. TODO: Load this from Cloud Firestore!
+          CommentCard(
+            comment: Comment(
+              id: 'abc',
+              author: const User(id: '123', email: 'some@email.com'),
+              body: 'This is a comment!',
+              createdAt: DateTime.now()..toUtc(),
+            ),
+          ),
+          const CommentForm()
+        ],
+      ),
+    );
+  }
+}
+
+class _ApodSlider extends StatelessWidget {
+  const _ApodSlider({
+    Key? key,
+    required this.sliderScalar,
+    required this.apod,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final Apod apod;
+  final double sliderScalar;
+  final Function(double) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return (apod.mediaType == MediaType.image)
+        ? Slider(
+            min: 1.0,
+            max: 4.0,
+            divisions: 20,
+            label: sliderScalar.toStringAsPrecision(2),
+            value: sliderScalar.toDouble(),
+            onChanged: onChanged,
+            activeColor: Colors.purple[200],
+            inactiveColor: Colors.purple[800],
+          )
+        : Container();
   }
 }
 
