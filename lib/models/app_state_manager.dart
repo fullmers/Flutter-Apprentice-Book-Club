@@ -12,13 +12,11 @@ class ApodTab {
 
 class AppStateManager extends ChangeNotifier {
   AppStateManager() {
+    // Set up a listener that informs our UI any
+    // time the active user changes.
     _firebaseAuth.userChanges().listen(
       (firebase_auth.User? firebaseUser) {
-        if (firebaseUser == null) {
-          user = null;
-        } else {
-          user = firebaseUser.toUser();
-        }
+        user = firebaseUser?.toUser();
         notifyListeners();
       },
     );
@@ -89,9 +87,9 @@ class AppStateManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
-    user = null;
-    _initialized = false;
+  void logout() async {
+    await _googleSignIn.signOut();
+    await _firebaseAuth.signOut();
     _selectedTab = 0;
 
     initializeApp();

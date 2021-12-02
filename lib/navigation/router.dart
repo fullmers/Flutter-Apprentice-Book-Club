@@ -30,9 +30,10 @@ class GoRouterRedirector {
   final List<Redirect> _redirects;
 
   static GoRouterRedirector get instance => GoRouterRedirector([
+        LoggedInRedirect(),
+        LoggedOutRedirect(),
         UninitializedRedirect(),
         OnInitializationRedirect(),
-        LoggedInRedirect(),
         UpdateHomeTabRedirect(),
       ]);
 
@@ -138,6 +139,17 @@ class LoggedInRedirect extends Redirect {
     String next = queryParams.remove('next') ?? Routes.home.path;
     return Uri(path: next, queryParameters: queryParams);
   }
+}
+
+class LoggedOutRedirect extends Redirect {
+  @override
+  bool predicate(GoRouterState state, AppStateManager manager) =>
+      manager.isInitialized &&
+      (!manager.isLoggedIn && state.subloc != Routes.login.path);
+
+  @override
+  Uri? getNewUri(GoRouterState state, AppStateManager manager) =>
+      Uri(path: Routes.login.path);
 }
 
 class UpdateHomeTabRedirect extends Redirect {

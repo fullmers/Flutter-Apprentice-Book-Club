@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () => context.read<AppStateManager>().logout(),
+              icon: const Icon(Icons.logout),
+            ),
+          ],
         ),
         body: SafeArea(
           child: IndexedStack(
