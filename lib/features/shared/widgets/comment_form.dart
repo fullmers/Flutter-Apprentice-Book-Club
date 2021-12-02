@@ -6,8 +6,8 @@ class CommentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         children: <Widget>[
-          Expanded(child: TextField()),
-          IconButton(icon: Icon(Icons.send), onPressed: () {}),
+          const Expanded(child: TextField()),
+          IconButton(icon: const Icon(Icons.send), onPressed: () {}),
         ],
       );
 }
