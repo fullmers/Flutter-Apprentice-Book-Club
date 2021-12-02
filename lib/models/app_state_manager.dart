@@ -1,4 +1,7 @@
+import 'package:apod/features/shared/models/models.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ApodTab {
   static const int today = 0;
@@ -9,12 +12,17 @@ class ApodTab {
 
 class AppStateManager extends ChangeNotifier {
   bool _initialized = false;
-  bool _loggedIn = false;
   int _selectedTab = ApodTab.today;
+  User? user;
+  String? authError;
 
   bool get isInitialized => _initialized;
-  bool get isLoggedIn => _loggedIn;
+  bool get isLoggedIn => user != null;
   int get selectedTab => _selectedTab;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn.standard();
+  final firebase_auth.FirebaseAuth _firebaseAuth =
+      firebase_auth.FirebaseAuth.instance;
 
   void initializeApp() {
     _initialized = true;
@@ -22,7 +30,33 @@ class AppStateManager extends ChangeNotifier {
   }
 
   void login(String username, String password) {
-    _loggedIn = true;
+    // Don't use this anymore - we're replacing auth with Google Sign In
+    // _loggedIn = true;
+    notifyListeners();
+  }
+
+  Future<void> loginWithGoogle() async {
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      final googleAuth = await googleUser?.authentication;
+      final credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      final userCred = await _firebaseAuth.signInWithCredential(credential);
+      if (userCred.user != null) {
+        authError = null;
+        user = userCred.user!.toUser();
+      } else {
+        authError = 'Unknown auth error';
+      }
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      authError = e.toString();
+    } on Exception catch (e) {
+      // ignore: avoid_print
+      print('Unexpected logInWithGoogle Exception: $e');
+      authError = 'Unknown auth error';
+    }
     notifyListeners();
   }
 
@@ -43,7 +77,7 @@ class AppStateManager extends ChangeNotifier {
   }
 
   void logout() {
-    _loggedIn = false;
+    user = null;
     _initialized = false;
     _selectedTab = 0;
 
@@ -53,3 +87,10 @@ class AppStateManager extends ChangeNotifier {
 }
 
 final AppStateManager appStateManager = AppStateManager();
+
+extension on firebase_auth.User {
+  User toUser() => User(
+        id: uid,
+        email: email,
+      );
+}

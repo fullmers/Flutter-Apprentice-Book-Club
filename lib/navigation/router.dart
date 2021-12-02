@@ -9,6 +9,7 @@ final goRouter = GoRouter(
     initialLocation: Routes.splash.path,
     routes: [
       Routes.splash,
+      Routes.login,
       Routes.home,
     ],
     urlPathStrategy: UrlPathStrategy.path,
@@ -31,6 +32,7 @@ class GoRouterRedirector {
   static GoRouterRedirector get instance => GoRouterRedirector([
         UninitializedRedirect(),
         OnInitializationRedirect(),
+        LoggedInRedirect(),
         UpdateHomeTabRedirect(),
       ]);
 
@@ -115,6 +117,25 @@ class OnInitializationRedirect extends Redirect {
       }
       next = uri.path;
     }
+
+    if (manager.isLoggedIn) {
+      return Uri(path: next, queryParameters: queryParams);
+    } else {
+      queryParams['next'] = next;
+      return Uri(path: Routes.login.path, queryParameters: queryParams);
+    }
+  }
+}
+
+class LoggedInRedirect extends Redirect {
+  @override
+  bool predicate(GoRouterState state, AppStateManager manager) =>
+      manager.isLoggedIn && state.subloc == Routes.login.path;
+
+  @override
+  Uri? getNewUri(GoRouterState state, AppStateManager manager) {
+    Map<String, String> queryParams = <String, String>{...state.queryParams};
+    String next = queryParams.remove('next') ?? Routes.home.path;
     return Uri(path: next, queryParameters: queryParams);
   }
 }

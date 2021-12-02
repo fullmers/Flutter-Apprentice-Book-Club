@@ -6,3 +6,4 @@ export 'data_contract.dart';
 export 'local_memory_source.dart';
 export 'local_persistence_source.dart';
 export 'repository.dart';
+export 'user.dart';

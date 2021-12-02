@@ -1,4 +1,5 @@
 import 'package:apod/features/home/home.dart';
+import 'package:apod/features/login/login.dart';
 import 'package:apod/features/shared/widgets/apod_detail.dart';
 import 'package:apod/features/splash/splash_page.dart';
 import 'package:apod/models/models.dart';
@@ -12,6 +13,12 @@ class Routes {
     path: '/splash',
     pageBuilder: (BuildContext context, GoRouterState state) =>
         SplashPage.page(key: state.pageKey),
+  );
+
+  static final login = GoRoute(
+    path: '/login',
+    pageBuilder: (BuildContext context, GoRouterState state) =>
+        LoginPage.page(key: state.pageKey),
   );
 
   static final home = GoRoute(
