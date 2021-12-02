@@ -11,6 +11,19 @@ class ApodTab {
 }
 
 class AppStateManager extends ChangeNotifier {
+  AppStateManager() {
+    _firebaseAuth.userChanges().listen(
+      (firebase_auth.User? firebaseUser) {
+        if (firebaseUser == null) {
+          user = null;
+        } else {
+          user = firebaseUser.toUser();
+        }
+        notifyListeners();
+      },
+    );
+  }
+
   bool _initialized = false;
   int _selectedTab = ApodTab.today;
   User? user;
