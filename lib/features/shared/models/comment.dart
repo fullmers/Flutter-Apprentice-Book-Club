@@ -10,6 +10,7 @@ class Comment extends DataModel with _$Comment {
     String? id,
     required User author,
     required String body,
+    required String apodId,
     required DateTime createdAt,
   }) = _Comment;
 
