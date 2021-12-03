@@ -10,6 +10,7 @@ _$_Comment _$$_CommentFromJson(Map<String, dynamic> json) => _$_Comment(
       id: json['id'] as String?,
       author: User.fromJson(json['author'] as Map<String, dynamic>),
       body: json['body'] as String,
+      apodId: json['apodId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -18,5 +19,6 @@ Map<String, dynamic> _$$_CommentToJson(_$_Comment instance) =>
       'id': instance.id,
       'author': instance.author,
       'body': instance.body,
+      'apodId': instance.apodId,
       'createdAt': instance.createdAt.toIso8601String(),
     };
