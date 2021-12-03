@@ -25,11 +25,13 @@ class _$CommentTearOff {
       {String? id,
       required User author,
       required String body,
+      required String apodId,
       required DateTime createdAt}) {
     return _Comment(
       id: id,
       author: author,
       body: body,
+      apodId: apodId,
       createdAt: createdAt,
     );
   }
@@ -47,6 +49,7 @@ mixin _$Comment {
   String? get id => throw _privateConstructorUsedError;
   User get author => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
+  String get apodId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,7 +61,12 @@ mixin _$Comment {
 abstract class $CommentCopyWith<$Res> {
   factory $CommentCopyWith(Comment value, $Res Function(Comment) then) =
       _$CommentCopyWithImpl<$Res>;
-  $Res call({String? id, User author, String body, DateTime createdAt});
+  $Res call(
+      {String? id,
+      User author,
+      String body,
+      String apodId,
+      DateTime createdAt});
 
   $UserCopyWith<$Res> get author;
 }
@@ -76,6 +84,7 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
     Object? id = freezed,
     Object? author = freezed,
     Object? body = freezed,
+    Object? apodId = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -90,6 +99,10 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      apodId: apodId == freezed
+          ? _value.apodId
+          : apodId // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -111,7 +124,12 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
   factory _$CommentCopyWith(_Comment value, $Res Function(_Comment) then) =
       __$CommentCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, User author, String body, DateTime createdAt});
+  $Res call(
+      {String? id,
+      User author,
+      String body,
+      String apodId,
+      DateTime createdAt});
 
   @override
   $UserCopyWith<$Res> get author;
@@ -131,6 +149,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
     Object? id = freezed,
     Object? author = freezed,
     Object? body = freezed,
+    Object? apodId = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_Comment(
@@ -145,6 +164,10 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String,
+      apodId: apodId == freezed
+          ? _value.apodId
+          : apodId // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -161,6 +184,7 @@ class _$_Comment implements _Comment {
       {this.id,
       required this.author,
       required this.body,
+      required this.apodId,
       required this.createdAt});
 
   factory _$_Comment.fromJson(Map<String, dynamic> json) =>
@@ -173,11 +197,13 @@ class _$_Comment implements _Comment {
   @override
   final String body;
   @override
+  final String apodId;
+  @override
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Comment(id: $id, author: $author, body: $body, createdAt: $createdAt)';
+    return 'Comment(id: $id, author: $author, body: $body, apodId: $apodId, createdAt: $createdAt)';
   }
 
   @override
@@ -188,12 +214,14 @@ class _$_Comment implements _Comment {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.body, body) || other.body == body) &&
+            (identical(other.apodId, apodId) || other.apodId == apodId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, author, body, createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, author, body, apodId, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -211,6 +239,7 @@ abstract class _Comment implements Comment {
       {String? id,
       required User author,
       required String body,
+      required String apodId,
       required DateTime createdAt}) = _$_Comment;
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$_Comment.fromJson;
@@ -221,6 +250,8 @@ abstract class _Comment implements Comment {
   User get author;
   @override
   String get body;
+  @override
+  String get apodId;
   @override
   DateTime get createdAt;
   @override
