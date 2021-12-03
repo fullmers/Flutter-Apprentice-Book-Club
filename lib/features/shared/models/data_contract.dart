@@ -3,8 +3,8 @@ import 'repository.dart';
 /// Minimum set of functionality required to store data objects in a
 /// [Repository].
 abstract class DataModel {
-  const DataModel({required this.id});
-  final String id;
+  const DataModel({this.id});
+  final String? id;
 }
 
 /// Definition of the minimum set of methods we require to manage our app's

@@ -22,7 +22,7 @@ class _$CommentTearOff {
   const _$CommentTearOff();
 
   _Comment call(
-      {required String id,
+      {String? id,
       required User author,
       required String body,
       required DateTime createdAt}) {
@@ -44,7 +44,7 @@ const $Comment = _$CommentTearOff();
 
 /// @nodoc
 mixin _$Comment {
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   User get author => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -58,7 +58,7 @@ mixin _$Comment {
 abstract class $CommentCopyWith<$Res> {
   factory $CommentCopyWith(Comment value, $Res Function(Comment) then) =
       _$CommentCopyWithImpl<$Res>;
-  $Res call({String id, User author, String body, DateTime createdAt});
+  $Res call({String? id, User author, String body, DateTime createdAt});
 
   $UserCopyWith<$Res> get author;
 }
@@ -82,7 +82,7 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       author: author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
   factory _$CommentCopyWith(_Comment value, $Res Function(_Comment) then) =
       __$CommentCopyWithImpl<$Res>;
   @override
-  $Res call({String id, User author, String body, DateTime createdAt});
+  $Res call({String? id, User author, String body, DateTime createdAt});
 
   @override
   $UserCopyWith<$Res> get author;
@@ -137,7 +137,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       author: author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Comment implements _Comment {
   const _$_Comment(
-      {required this.id,
+      {this.id,
       required this.author,
       required this.body,
       required this.createdAt});
@@ -167,7 +167,7 @@ class _$_Comment implements _Comment {
       _$$_CommentFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
   final User author;
   @override
@@ -208,7 +208,7 @@ class _$_Comment implements _Comment {
 
 abstract class _Comment implements Comment {
   const factory _Comment(
-      {required String id,
+      {String? id,
       required User author,
       required String body,
       required DateTime createdAt}) = _$_Comment;
@@ -216,7 +216,7 @@ abstract class _Comment implements Comment {
   factory _Comment.fromJson(Map<String, dynamic> json) = _$_Comment.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
   User get author;
   @override

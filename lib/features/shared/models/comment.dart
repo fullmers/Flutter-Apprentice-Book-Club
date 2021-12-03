@@ -7,7 +7,7 @@ part 'comment.g.dart';
 @Freezed()
 class Comment extends DataModel with _$Comment {
   const factory Comment({
-    required String id,
+    String? id,
     required User author,
     required String body,
     required DateTime createdAt,
