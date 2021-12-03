@@ -11,7 +11,7 @@ abstract class DataModel {
 /// data.
 abstract class DataContract<T extends DataModel> {
   /// Saves the given item.
-  Future<void> setItem(T obj);
+  Future<T> setItem(T obj);
 
   /// Retreives an item associated with the given [id], if it exists.
   Future<T?> getItem(String id);

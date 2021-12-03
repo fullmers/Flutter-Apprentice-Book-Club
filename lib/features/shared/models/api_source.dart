@@ -48,7 +48,8 @@ class ApiSource<T extends DataModel> extends Source<T> {
   Future<void> setFavorite(String id, bool isFavorited) async {}
 
   @override
-  Future<void> setItem(T obj) async {}
+  Future<T> setItem(T obj) async =>
+      throw Exception('Cannot call ApiSource.setItem');
 
   @override
   Future<void> toggleFavorite(String id) async {}

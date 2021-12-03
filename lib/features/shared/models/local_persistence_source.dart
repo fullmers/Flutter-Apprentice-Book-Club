@@ -52,10 +52,10 @@ class LocalPersistenceSource<T extends DataModel> extends Source<T> {
       isFavorited ? _favoritesBox.delete(id) : _favoritesBox.put(id, true);
 
   @override
-  Future<void> setItem(T obj) => _itemsBox.put(
-        obj.id,
-        toJson(obj),
-      );
+  Future<T> setItem(T obj) async {
+    _itemsBox.put(obj.id, toJson(obj));
+    return fromJson((_itemsBox.get(obj.id) as Map).cast<String, dynamic>());
+  }
 
   @override
   Future<void> toggleFavorite(String id) async => _favoritesBox.containsKey(id)

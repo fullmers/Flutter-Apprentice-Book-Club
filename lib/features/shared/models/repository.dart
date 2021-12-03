@@ -117,10 +117,13 @@ class Repository<T extends DataModel> extends DataContract<T> {
   }
 
   @override
-  Future<void> setItem(T obj) async {
-    for (final source in sourceList) {
-      source.setItem(obj);
+  Future<T> setItem(T obj) async {
+    // Write in reverse-order first, so that the server can generate
+    // primary keys for new items.
+    for (final source in sourceList.reversed) {
+      obj = await source.setItem(obj);
     }
+    return obj;
   }
 
   @override
