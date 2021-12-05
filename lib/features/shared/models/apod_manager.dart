@@ -3,7 +3,7 @@ import 'package:apod/features/shared/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ApodManager extends StateNotifier<ApodState> {
-  /// Public constructor which accepts a `Repository<Repo>` instance
+  /// Public constructor which accepts a `Repository<Apod>` instance
   /// for long-lived persistence of favorites.
   ApodManager(this._repository) : super(ApodState.initial());
 

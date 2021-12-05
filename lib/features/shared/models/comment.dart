@@ -1,14 +1,17 @@
+// ignore_for_file: invalid_annotation_target
 import 'package:apod/features/shared/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 part 'comment.freezed.dart';
 part 'comment.g.dart';
 
 @Freezed()
 class Comment extends DataModel with _$Comment {
+  @JsonSerializable(explicitToJson: true)
   const factory Comment({
     String? id,
-    required User author,
+    @UserConverter() required User author,
     required String body,
     required String apodId,
     required DateTime createdAt,

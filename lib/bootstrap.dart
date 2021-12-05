@@ -10,8 +10,10 @@ import 'models/models.dart';
 
 late Repository<Apod> apodRepository;
 late Repository<JournalEntry> journalRepository;
+late CommentRepository<Comment> commentRepository;
 
 late StateNotifierProvider<ApodManager, ApodState> apodManagerProvider;
+late StateNotifierProvider<CommentManager, CommentState> commentManagerProvider;
 
 Future<void> bootstrap() async {
   // This is required if we want to access platform channels.
@@ -28,9 +30,13 @@ Future<void> bootstrap() async {
     fromJson: (Map<String, dynamic> data) => JournalEntry.fromJson(data),
     toJson: (JournalEntry obj) => obj.toJson(),
   );
+  final commentHive = LocalPersistenceSource<Comment>(
+    fromJson: (Map<String, dynamic> data) => Comment.fromJson(data),
+    toJson: (Comment obj) => obj.toJson(),
+  );
   await apodHive.ready();
-  // await apodHive.clear();
   await journalHive.ready();
+  await commentHive.ready();
 
   appStateManager.initializeApp();
 
@@ -54,7 +60,24 @@ Future<void> bootstrap() async {
     ],
   );
 
+  // Create the full Comment Repository
+  commentRepository = CommentRepository<Comment>(
+    sourceList: [
+      LocalMemorySource<Comment>(),
+      commentHive,
+      FirestoreSource<Comment>(
+        toJson: (Comment comment) => comment.toJson(),
+        fromJson: (Map<String, dynamic> json) => Comment.fromJson(json),
+        collectionName: 'comments',
+      ),
+    ],
+  );
+
   apodManagerProvider = StateNotifierProvider<ApodManager, ApodState>(
     (ref) => ApodManager(apodRepository),
+  );
+
+  commentManagerProvider = StateNotifierProvider<CommentManager, CommentState>(
+    (ref) => CommentManager(commentRepository),
   );
 }

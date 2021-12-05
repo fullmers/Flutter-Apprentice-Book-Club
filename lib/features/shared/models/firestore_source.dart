@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'models.dart';
 
-class FirestoreSource<T extends DataModel> extends Source<T> {
+class FirestoreSource<T extends DataModel> extends StreamSource<T> {
   FirestoreSource({
     required this.collectionName,
     required this.fromJson,
@@ -71,4 +71,28 @@ class FirestoreSource<T extends DataModel> extends Source<T> {
   @override
   Future<void> toggleFavorite(String id) =>
       throw Exception('Cannot call FirestoreSource.toggleFavorite');
+
+  @override
+  Stream<List<T>> subscribeTo(WhereClause? where) async* {
+    // `collection.where()` returns a `Query`, so we'll think about things in
+    // that way right off the bat.
+    firestore.Query query = collection;
+    if (where != null) {
+      if (where.type == FilterType.equals) {
+        query = query.where(where.fieldName, isEqualTo: where.value);
+      } else {
+        // Did not use Freezed to build `FilterType` (to highlight this - we
+        // could have), so this check is required so we don't forget to honor
+        // future values. Long live Freezed's `map` method!
+        throw Exception('Failed to handle FilterType of ${where.type}');
+      }
+    }
+
+    Stream<firestore.QuerySnapshot> snapshots = query.snapshots();
+
+    yield* snapshots.map<List<T>>(
+      (firestore.QuerySnapshot snapshot) =>
+          snapshot.docs.map<T>(fromDocument).toList(),
+    );
+  }
 }
