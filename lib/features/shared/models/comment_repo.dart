@@ -4,7 +4,7 @@ class CommentRepository<T extends Comment> extends Repository<T> {
   CommentRepository({required List<Source<T>> sourceList})
       : super(sourceList: sourceList);
 
-  Stream<List<T>> subscribeTo(WhereClause? where) {
+  Stream<List<T>> subscribeTo(List<WhereClause>? where) {
     final source = sourceList.last as StreamSource<T>;
     final nonStreamSources = sourceList.sublist(0, sourceList.length - 1);
     return source.subscribeTo(where).asBroadcastStream()

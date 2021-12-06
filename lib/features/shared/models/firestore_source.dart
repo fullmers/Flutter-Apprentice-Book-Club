@@ -73,18 +73,23 @@ class FirestoreSource<T extends DataModel> extends StreamSource<T> {
       throw Exception('Cannot call FirestoreSource.toggleFavorite');
 
   @override
-  Stream<List<T>> subscribeTo(WhereClause? where) async* {
+  Stream<List<T>> subscribeTo(List<WhereClause>? where) async* {
     // `collection.where()` returns a `Query`, so we'll think about things in
     // that way right off the bat.
     firestore.Query query = collection;
     if (where != null) {
-      if (where.type == FilterType.equals) {
-        query = query.where(where.fieldName, isEqualTo: where.value);
-      } else {
-        // Did not use Freezed to build `FilterType` (to highlight this - we
-        // could have), so this check is required so we don't forget to honor
-        // future values. Long live Freezed's `map` method!
-        throw Exception('Failed to handle FilterType of ${where.type}');
+      for (final whereClause in where) {
+        if (whereClause.type == FilterType.equals) {
+          query = query.where(
+            whereClause.fieldName,
+            isEqualTo: whereClause.value,
+          );
+        } else {
+          // Did not use Freezed to build `FilterType` (to highlight this - we
+          // could have), so this check is required so we don't forget to honor
+          // future values. Long live Freezed's `map` method!
+          throw Exception('Failed to handle FilterType of ${whereClause.type}');
+        }
       }
     }
 
