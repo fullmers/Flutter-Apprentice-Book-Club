@@ -51,6 +51,12 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
   }
 
   @override
+  void dispose() {
+    ref.read(commentManagerProvider.notifier).unsubscribeToCommentsForApod();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(apodManagerProvider);
     final commentState = ref.watch(commentManagerProvider);

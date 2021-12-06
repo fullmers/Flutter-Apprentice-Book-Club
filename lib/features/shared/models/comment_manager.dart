@@ -23,15 +23,13 @@ class CommentManager extends StateNotifier<CommentState> {
         .listen(_updateComments);
   }
 
+  /// Closes the subscription for new comments on a given [Apod]. Call this when
+  /// leaving a page that requires such a subscription.
+  void unsubscribeToCommentsForApod() => _commentSubscription?.cancel();
+
   void _updateComments(List<Comment> comments) {
     state = state.copyWith(
       comments: comments..sort((a, b) => b.id!.compareTo(a.id!)),
     );
-  }
-
-  @override
-  void dispose() {
-    _commentSubscription?.cancel();
-    super.dispose();
   }
 }
