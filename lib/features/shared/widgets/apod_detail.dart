@@ -44,11 +44,16 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
     ref
         .read(apodManagerProvider.notifier)
         .getApod(widget.id.toDateTimeAsDateString());
+
+    ref.read(commentManagerProvider.notifier).subscribeToCommentsForApod(
+          widget.id,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(apodManagerProvider);
+    final commentState = ref.watch(commentManagerProvider);
     if (state.primaryApod == null || state.primaryApod!.id != widget.id) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator.adaptive()),
@@ -107,7 +112,10 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
               width: MediaQuery.of(context).size.width,
               child: _tabController.index == 0
                   ? _getInfo(apod)
-                  : const _ApodComments(),
+                  : _ApodComments(
+                      apod: apod,
+                      comments: commentState.comments,
+                    ),
             )
           ],
         ),
@@ -174,25 +182,43 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
 }
 
 class _ApodComments extends StatelessWidget {
-  const _ApodComments({Key? key}) : super(key: key);
+  const _ApodComments({
+    required this.apod,
+    required this.comments,
+    Key? key,
+  }) : super(key: key);
+
+  final List<Comment>? comments;
+  final Apod apod;
 
   @override
   Widget build(BuildContext context) {
+    // Still loading.
+    if (comments == null) {
+      return const Center(child: CircularProgressIndicator.adaptive());
+    } else if (comments!.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          children: <Widget>[
+            const Center(child: Text('No comments yet')),
+            CommentForm(apod: apod),
+          ],
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: ListView(
-        children: <Widget>[
-          /// Obviously fake. TODO: Load this from Cloud Firestore!
-          CommentCard(
-            comment: Comment(
-              id: 'abc',
-              author: const User(id: '123', email: 'some@email.com'),
-              body: 'This is a comment!',
-              createdAt: DateTime.now()..toUtc(),
-            ),
-          ),
-          const CommentForm()
-        ],
+      child: ListView.builder(
+        itemCount: comments!.length + 1,
+        itemBuilder: (BuildContext context, int index) =>
+            index < comments!.length
+                ? CommentCard(
+                    comment: comments![index],
+                    key: ValueKey(comments![index].id),
+                  )
+                : CommentForm(apod: apod),
       ),
     );
   }
