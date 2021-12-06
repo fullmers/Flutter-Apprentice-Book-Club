@@ -16,11 +16,11 @@ class CommentManager extends StateNotifier<CommentState> {
       _repository.setItem(comment);
 
   void subscribeToCommentsForApod(String apodId) {
-    _commentSubscription = _repository
-        .subscribeTo(
-          WhereClause.equals(fieldName: 'apodId', value: apodId),
-        )
-        .listen(_updateComments);
+    _commentSubscription = _repository.subscribeTo(
+      [
+        WhereClause.equals(fieldName: 'apodId', value: apodId),
+      ],
+    ).listen(_updateComments);
   }
 
   /// Closes the subscription for new comments on a given [Apod]. Call this when
