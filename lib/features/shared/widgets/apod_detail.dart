@@ -186,6 +186,7 @@ class _ApodComments extends StatelessWidget {
           CommentCard(
             comment: Comment(
               id: 'abc',
+              apodId: '123',
               author: const User(id: '123', email: 'some@email.com'),
               body: 'This is a comment!',
               createdAt: DateTime.now()..toUtc(),
