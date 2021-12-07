@@ -31,6 +31,7 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
   double _sliderScalar = 1.0;
   final TransformationController _controller = TransformationController();
   late final TabController _tabController;
+  late final CommentManager _commentManager;
 
   @override
   void initState() {
@@ -45,14 +46,16 @@ class _ApodDetailState extends ConsumerState<ApodDetail>
         .read(apodManagerProvider.notifier)
         .getApod(widget.id.toDateTimeAsDateString());
 
-    ref.read(commentManagerProvider.notifier).subscribeToCommentsForApod(
-          widget.id,
-        );
+    _commentManager = ref.read(commentManagerProvider.notifier);
+
+    _commentManager.subscribeToCommentsForApod(
+      widget.id,
+    );
   }
 
   @override
   void dispose() {
-    ref.read(commentManagerProvider.notifier).unsubscribeToCommentsForApod();
+    _commentManager.unsubscribeToCommentsForApod();
     super.dispose();
   }
 

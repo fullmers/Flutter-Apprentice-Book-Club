@@ -19,12 +19,17 @@ class FirestoreSource<T extends DataModel> extends StreamSource<T> {
   @override
   SourceType get type => SourceType.remote;
 
-  T fromDocument(firestore.DocumentSnapshot document) => fromJson(
-        {
-          ...(document.data() as Map).cast<String, dynamic>(),
-          ...{'id': document.id},
-        },
-      );
+  T fromDocument(firestore.DocumentSnapshot document) {
+    // ignore: avoid_print
+    print('Loaded ${document.id} from Firestore');
+
+    return fromJson(
+      {
+        ...(document.data() as Map).cast<String, dynamic>(),
+        ...{'id': document.id},
+      },
+    );
+  }
 
   @override
   Future<void> deleteItem(T item) async =>
@@ -83,6 +88,11 @@ class FirestoreSource<T extends DataModel> extends StreamSource<T> {
           query = query.where(
             whereClause.fieldName,
             isEqualTo: whereClause.value,
+          );
+        } else if (whereClause.type == FilterType.greaterThan) {
+          query = query.where(
+            whereClause.fieldName,
+            isGreaterThan: whereClause.value,
           );
         } else {
           // Did not use Freezed to build `FilterType` (to highlight this - we

@@ -23,7 +23,7 @@ class _$CommentTearOff {
 
   _Comment call(
       {String? id,
-      @UserConverter() required User author,
+      @AuthorConverter() required User author,
       required String body,
       required String apodId,
       required DateTime createdAt}) {
@@ -47,11 +47,10 @@ const $Comment = _$CommentTearOff();
 /// @nodoc
 mixin _$Comment {
   String? get id => throw _privateConstructorUsedError;
-  @UserConverter()
+  @AuthorConverter()
   User get author => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
-  String get apodId =>
-      throw _privateConstructorUsedError; // @DateTimeConverter()
+  String get apodId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,7 +64,7 @@ abstract class $CommentCopyWith<$Res> {
       _$CommentCopyWithImpl<$Res>;
   $Res call(
       {String? id,
-      @UserConverter() User author,
+      @AuthorConverter() User author,
       String body,
       String apodId,
       DateTime createdAt});
@@ -128,7 +127,7 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
-      @UserConverter() User author,
+      @AuthorConverter() User author,
       String body,
       String apodId,
       DateTime createdAt});
@@ -185,7 +184,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
 class _$_Comment implements _Comment {
   const _$_Comment(
       {this.id,
-      @UserConverter() required this.author,
+      @AuthorConverter() required this.author,
       required this.body,
       required this.apodId,
       required this.createdAt});
@@ -196,13 +195,13 @@ class _$_Comment implements _Comment {
   @override
   final String? id;
   @override
-  @UserConverter()
+  @AuthorConverter()
   final User author;
   @override
   final String body;
   @override
   final String apodId;
-  @override // @DateTimeConverter()
+  @override
   final DateTime createdAt;
 
   @override
@@ -241,7 +240,7 @@ class _$_Comment implements _Comment {
 abstract class _Comment implements Comment {
   const factory _Comment(
       {String? id,
-      @UserConverter() required User author,
+      @AuthorConverter() required User author,
       required String body,
       required String apodId,
       required DateTime createdAt}) = _$_Comment;
@@ -251,13 +250,13 @@ abstract class _Comment implements Comment {
   @override
   String? get id;
   @override
-  @UserConverter()
+  @AuthorConverter()
   User get author;
   @override
   String get body;
   @override
   String get apodId;
-  @override // @DateTimeConverter()
+  @override
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

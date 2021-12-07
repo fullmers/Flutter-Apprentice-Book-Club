@@ -37,6 +37,7 @@ Future<void> bootstrap() async {
   await apodHive.ready();
   await journalHive.ready();
   await commentHive.ready();
+  // commentHive.clear();
 
   appStateManager.initializeApp();
 
