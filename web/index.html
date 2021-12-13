@@ -25,11 +25,23 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Apod Viewer">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta
+    name="google-signin-client_id"
+    content="691231305677-4ua4g2sj2ud8cnjid5a5e57ic27avk6n.apps.googleusercontent.com"
+  >
+
 
   <title>apod</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  </script>
+
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->

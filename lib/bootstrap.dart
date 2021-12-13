@@ -1,4 +1,4 @@
-import 'package:apod/api/apod_api.dart';
+import 'package:apod/api/api.dart';
 import 'package:apod/features/shared/models/models.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,17 @@ late StateNotifierProvider<CommentManager, CommentState> commentManagerProvider;
 Future<void> bootstrap() async {
   // This is required if we want to access platform channels.
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: firebaseApikey,
+      authDomain: "flutter-apprentice-apod.firebaseapp.com",
+      projectId: "flutter-apprentice-apod",
+      storageBucket: "flutter-apprentice-apod.appspot.com",
+      messagingSenderId: "691231305677",
+      appId: "1:691231305677:web:2a447a970050ae03989e84",
+      measurementId: "G-E8XS1QHGNC",
+    ),
+  );
 
   // Initialize Hive and a persistence wrapper
   await Hive.initFlutter();
