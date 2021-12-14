@@ -10,11 +10,11 @@ environment:
 dependencies:
   cached_network_image: ^3.1.0+1
   chopper: ^4.0.3
-  cloud_firestore: ^3.1.1
+  cloud_firestore: ^3.1.4
   container_tab_indicator: ^0.3.0
   cupertino_icons: ^1.0.2
-  firebase_auth: ^3.2.0
-  firebase_core: ^1.10.0
+  firebase_auth: ^3.3.3
+  firebase_core: ^1.10.5
   flutter:
     sdk: flutter
   flutter_riverpod: ^1.0.0
