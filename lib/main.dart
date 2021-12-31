@@ -2,6 +2,7 @@ import 'package:apod/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as og_provider;
+import 'package:flutter/gestures.dart';
 
 import 'apod_theme.dart';
 import 'bootstrap.dart';
@@ -35,7 +36,18 @@ class ApodApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerDelegate: goRouter.routerDelegate,
         routeInformationParser: goRouter.routeInformationParser,
+        scrollBehavior: MyCustomScrollBehavior(),
       ),
     );
   }
+}
+
+// need this for mouse drag/scroll ListView, PageView etc to work on web and desktop
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
